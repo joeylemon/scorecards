@@ -12,48 +12,95 @@ class ScorecardTableViewController: UITableViewController, UINavigationControlle
     
     var scorecardListing: ScorecardListing?
     var scorecard: Scorecard?
+    var dataLoaded = false
+    
+    var indicator = UIActivityIndicatorView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //scorecard = Scorecard(id: 1, date:"Oct 16 2019", people:"Joey", location:"Riverwatch Course")
-        
-        // Set up views if editing an existing Meal.
         if let scorecardListing = scorecardListing {
             navigationItem.title = scorecardListing.DateString
-            print("open existing scorecard")
+            
             scorecard = Scorecard(listing: scorecardListing)
+            
+            activityIndicator()
+            showActivityIndicator()
+            scorecard?.load {
+                DispatchQueue.main.async {
+                    self.dataLoaded = true
+                    self.tableView.reloadData()
+                    self.hideActivityIndicator()
+                }
+            }
         }
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
+        self.tableView.allowsSelection = false // Disable row highlighting
+        self.tableView.rowHeight = 50;
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return getTotalRows()
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
+        // Table view cells are reused and should be dequeued using a cell identifier.
+        let cellIdentifier = "ScorecardScoreCell"
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ScorecardScoreCell  else {
+            fatalError("The dequeued cell is not an instance of \(cellIdentifier).")
+        }
+        
+        // Don't continue if the data isn't loaded yet
+        if !dataLoaded { return cell }
+        
+        // Remove previous labels from stack view
+        cell.stackView.subviews.forEach({ $0.removeFromSuperview() })
+        
+        if indexPath.row == 1 {
+            addLabel(text: "", toView: cell.stackView)
+            scorecard?.Players.forEach { player in
+                addLabel(text: player.Name, toView: cell.stackView)
+            }
+        } else if indexPath.row > 1 && indexPath.row != getTotalRows() {
+            addLabel(text: String(indexPath.row - 1), toView: cell.stackView)
+            scorecard?.Scores[indexPath.row-2].forEach { score in
+                addButton(text: String(score.Score), toView: cell.stackView)
+            }
+        }
 
         return cell
     }
-    */
-
+    
+    func addLabel(text: String, toView: UIStackView) {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        label.textAlignment = .center
+        label.text = text
+        toView.addArrangedSubview(label)
+    }
+    
+    func addButton(text: String, toView: UIStackView) {
+        let button = UIButton()
+        button.frame = CGRect(x: 0, y: 0, width: 50, height: 100)
+        button.backgroundColor = UIColor.red
+        button.setTitle(text, for: .normal)
+        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        toView.addArrangedSubview(button)
+    }
+    
+    @objc func buttonAction(sender: UIButton!) {
+       print("Button tapped")
+    }
+    
+    func getTotalRows() -> Int {
+        return 2 + (scorecard?.Scores.count ?? 0)
+    }
+ 
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -98,5 +145,22 @@ class ScorecardTableViewController: UITableViewController, UINavigationControlle
         // Pass the selected object to the new view controller.
     }
     */
+    
+    private func activityIndicator() {
+        indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        indicator.style = UIActivityIndicatorView.Style.medium
+        indicator.center = self.view.center
+        self.view.addSubview(indicator)
+    }
+    
+    private func showActivityIndicator() {
+        indicator.startAnimating()
+        indicator.backgroundColor = .white
+    }
+    
+    private func hideActivityIndicator() {
+        indicator.stopAnimating()
+        indicator.hidesWhenStopped = true
+    }
 
 }

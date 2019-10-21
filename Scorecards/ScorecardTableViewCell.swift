@@ -14,6 +14,7 @@ class ScorecardTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var peopleLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var rowImage: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

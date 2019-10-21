@@ -15,12 +15,15 @@ class ListViewController: UITableViewController {
     var scorecards = [ScorecardListing]()
     
     let refreshController = UIRefreshControl()
+    var indicator = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.rowHeight = 95
         self.tableView.tableFooterView = UIView() // Only show bottom separators between cells
+        
+        activityIndicator()
         
         self.tableView.refreshControl = refreshController
         // Configure Refresh Control
@@ -57,6 +60,12 @@ class ListViewController: UITableViewController {
         cell.dateLabel.text = scorecard.DateString
         cell.peopleLabel.text = scorecard.People
         cell.locationLabel.text = scorecard.Location
+        
+        if scorecard.HoleCount == 9 {
+            cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
+        } else {
+            cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
+        }
 
         return cell
     }
@@ -134,20 +143,39 @@ class ListViewController: UITableViewController {
     }
     
     //MARK: Private Methods
+    private func activityIndicator() {
+        indicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        indicator.style = UIActivityIndicatorView.Style.medium
+        indicator.center = self.view.center
+        self.view.addSubview(indicator)
+    }
+    
+    private func showActivityIndicator() {
+        indicator.startAnimating()
+        indicator.backgroundColor = .white
+    }
+    
+    private func hideActivityIndicator() {
+        indicator.stopAnimating()
+        indicator.hidesWhenStopped = true
+    }
+    
     @objc private func refreshScorecards(_ sender: Any) {
         loadScorecards()
     }
     
     private func loadScorecards() {
+        showActivityIndicator()
         sendPostRequest(url: "https://jlemon.org/golf/listentries", id: -1) { (result) -> () in
             let decoder = JSONDecoder()
             do {
                 self.scorecards = try decoder.decode([ScorecardListing].self, from: result!)
-                
+
                 // Can't reload data from non-main thread
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                     self.refreshController.endRefreshing()
+                    self.hideActivityIndicator()
                 }
             } catch {
                 print(error.localizedDescription)

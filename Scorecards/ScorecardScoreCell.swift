@@ -11,7 +11,7 @@ import UIKit
 class ScorecardScoreCell: UITableViewCell {
     
     //MARK: Properties
-    
+    @IBOutlet weak var stackView: UIStackView!
 
     override func awakeFromNib() {
         super.awakeFromNib()

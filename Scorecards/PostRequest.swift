@@ -32,7 +32,7 @@ func sendPostRequest(url: String, id: Int, completion: @escaping (Data?) -> ()) 
             return
         }
         
-        print(String(data: data, encoding: .utf8) ?? "can't parse result data as UTF")
+        //print(String(data: data, encoding: .utf8) ?? "can't parse result data as UTF")
         
         completion(data)
     })
