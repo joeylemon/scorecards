@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		128DC5F4235A02450055B872 /* ScorecardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5F3235A02450055B872 /* ScorecardTableViewController.swift */; };
+		121D9277235E4BDB006889E4 /* ScoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D9276235E4BDB006889E4 /* ScoreCell.swift */; };
+		121D927B235E4C4D006889E4 /* ScorecardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D927A235E4C4D006889E4 /* ScorecardController.swift */; };
 		128DC5F8235A0F2B0055B872 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5F7235A0F2B0055B872 /* Player.swift */; };
 		128DC5FA235A109D0055B872 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5F9235A109D0055B872 /* Score.swift */; };
 		128DC5FC235A25820055B872 /* ScorecardListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5FB235A25820055B872 /* ScorecardListing.swift */; };
 		128DC5FE235ABC840055B872 /* PostRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5FD235ABC840055B872 /* PostRequest.swift */; };
-		128DC604235B9E180055B872 /* ScorecardScoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC603235B9E170055B872 /* ScorecardScoreCell.swift */; };
 		12B4D234235947D70025DFFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D233235947D70025DFFD /* AppDelegate.swift */; };
 		12B4D236235947D70025DFFD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D235235947D70025DFFD /* SceneDelegate.swift */; };
 		12B4D238235947D70025DFFD /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D237235947D70025DFFD /* ListViewController.swift */; };
@@ -25,12 +25,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		128DC5F3235A02450055B872 /* ScorecardTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorecardTableViewController.swift; sourceTree = "<group>"; };
+		121D9276235E4BDB006889E4 /* ScoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCell.swift; sourceTree = "<group>"; };
+		121D927A235E4C4D006889E4 /* ScorecardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorecardController.swift; sourceTree = "<group>"; };
 		128DC5F7235A0F2B0055B872 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		128DC5F9235A109D0055B872 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		128DC5FB235A25820055B872 /* ScorecardListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorecardListing.swift; sourceTree = "<group>"; };
 		128DC5FD235ABC840055B872 /* PostRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRequest.swift; sourceTree = "<group>"; };
-		128DC603235B9E170055B872 /* ScorecardScoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorecardScoreCell.swift; sourceTree = "<group>"; };
 		12B4D230235947D70025DFFD /* Scorecards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scorecards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12B4D233235947D70025DFFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12B4D235235947D70025DFFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,19 +74,19 @@
 		12B4D232235947D70025DFFD /* Scorecards */ = {
 			isa = PBXGroup;
 			children = (
+				121D927A235E4C4D006889E4 /* ScorecardController.swift */,
+				121D9276235E4BDB006889E4 /* ScoreCell.swift */,
 				12B4D24D235979570025DFFD /* CreateViewController.swift */,
 				12B4D233235947D70025DFFD /* AppDelegate.swift */,
 				12B4D235235947D70025DFFD /* SceneDelegate.swift */,
 				12B4D237235947D70025DFFD /* ListViewController.swift */,
 				128DC5FD235ABC840055B872 /* PostRequest.swift */,
 				12B4D24923594B4C0025DFFD /* ScorecardTableViewCell.swift */,
-				128DC603235B9E170055B872 /* ScorecardScoreCell.swift */,
 				12B4D24723594A820025DFFD /* Scorecard.swift */,
 				128DC5FB235A25820055B872 /* ScorecardListing.swift */,
 				128DC5F9235A109D0055B872 /* Score.swift */,
 				128DC5F7235A0F2B0055B872 /* Player.swift */,
 				12B4D239235947D70025DFFD /* Main.storyboard */,
-				128DC5F3235A02450055B872 /* ScorecardTableViewController.swift */,
 				12B4D23C235947D70025DFFD /* Assets.xcassets */,
 				12B4D23E235947D70025DFFD /* LaunchScreen.storyboard */,
 				12B4D241235947D80025DFFD /* Info.plist */,
@@ -165,16 +165,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				121D927B235E4C4D006889E4 /* ScorecardController.swift in Sources */,
 				12B4D24823594A820025DFFD /* Scorecard.swift in Sources */,
 				128DC5FE235ABC840055B872 /* PostRequest.swift in Sources */,
 				12B4D238235947D70025DFFD /* ListViewController.swift in Sources */,
 				12B4D24E235979570025DFFD /* CreateViewController.swift in Sources */,
 				128DC5FC235A25820055B872 /* ScorecardListing.swift in Sources */,
-				128DC604235B9E180055B872 /* ScorecardScoreCell.swift in Sources */,
+				121D9277235E4BDB006889E4 /* ScoreCell.swift in Sources */,
 				128DC5FA235A109D0055B872 /* Score.swift in Sources */,
 				12B4D234235947D70025DFFD /* AppDelegate.swift in Sources */,
 				12B4D24A23594B4C0025DFFD /* ScorecardTableViewCell.swift in Sources */,
-				128DC5F4235A02450055B872 /* ScorecardTableViewController.swift in Sources */,
 				128DC5F8235A0F2B0055B872 /* Player.swift in Sources */,
 				12B4D236235947D70025DFFD /* SceneDelegate.swift in Sources */,
 			);

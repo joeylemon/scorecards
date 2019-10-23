@@ -16,9 +16,17 @@ class Scorecard: Codable {
     var People: String
     var Location: String
     var Holes: Int
+    var LowestScore: Int
     
     var Scores: [[Score]] = []
     var Players: [Player]
+    
+    var queues: [Int: DispatchWorkItem] = [Int: DispatchWorkItem]()
+    var curTask: DispatchWorkItem = DispatchWorkItem {}
+    
+    private enum CodingKeys: String, CodingKey {
+        case ID, Date, People, Location, Holes, LowestScore, Scores, Players
+    }
 
     //MARK: Initialization
     init(listing: ScorecardListing) {
@@ -28,28 +36,68 @@ class Scorecard: Codable {
         self.People = listing.People
         self.Location = listing.Location
         self.Holes = listing.HoleCount
+        self.LowestScore = 200
         self.Scores = [[Score]]()
         self.Players = [Player]()
     }
     
     func load(loaded: @escaping () -> Void) {
-        sendPostRequest(url: "https://jlemon.org/golf/getgamenew", id: self.ID, completion: { result in
+        sendGameRequest(url: "https://jlemon.org/golf/getgamenew", id: self.ID, completion: { result in
             let decoder = JSONDecoder()
             do {
                 let jsonScorecard = try decoder.decode(Scorecard.self, from: result!)
                 self.Scores = jsonScorecard.Scores
                 self.Players = jsonScorecard.Players
+                self.LowestScore = jsonScorecard.LowestScore
+                
                 loaded()
-//                for (holeNum, arr) in self.Scores.enumerated() {
-//                    for score in arr {
-//                        let playerName = self.Players.first{$0.ID == score.PlayerID}?.Name
-//                        print("score on hole \(holeNum) for player \(playerName ?? "UNK") is \(score.Score)")
-//                    }
-//                }
             } catch {
                 print(error.localizedDescription)
             }
         })
+    }
+    
+    func isComplete() -> Bool {
+        var complete = true
+        for hole in 0..<self.Holes {
+            if self.Scores[hole][0].Score == 0 { complete = false }
+        }
+        return complete
+    }
+    
+    func getPlayerIDs() -> [String] {
+        var names = [String]()
+        for player in Players {
+            names.append(String(player.ID))
+        }
+        return names
+    }
+    
+    func getSumForPlayer(playerIndex: Int) -> Int {
+        var sum = 0
+        for hole in 0..<self.Holes {
+            sum += self.Scores[hole][playerIndex].Score
+        }
+        return sum
+    }
+    
+    func incrementScore(hole: Int, playerIndex: Int) {
+        self.Scores[hole][playerIndex].Score += 1
+        if self.Scores[hole][playerIndex].Score > 10 {
+            self.Scores[hole][playerIndex].Score = 0
+        }
+        
+        curTask.cancel()
+        let task = DispatchWorkItem {
+            print("post new scores")
+            sendSetScoreRequest(id: self.ID, scores: self.Scores, playerIDs: self.getPlayerIDs(), completion: { result in
+                self.curTask.cancel()
+            }, incomplete: {
+                self.incrementScore(hole: hole, playerIndex: playerIndex)
+            })
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2, execute: task)
+        curTask = task
     }
 
 }

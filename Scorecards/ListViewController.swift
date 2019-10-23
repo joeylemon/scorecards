@@ -61,10 +61,11 @@ class ListViewController: UITableViewController {
         cell.peopleLabel.text = scorecard.People
         cell.locationLabel.text = scorecard.Location
         
-        if scorecard.HoleCount == 9 {
-            cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
+        cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
+        if scorecard.Winner == "t" {
+            cell.rowImage.tintColor = UIColor(red: 201.0/255.0, green: 201.0/255.0, blue: 0.0/255.0, alpha: 1)
         } else {
-            cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
+            cell.rowImage.tintColor = UIColor(red: 41.0/255.0, green: 141.0/255.0, blue: 36.0/255.0, alpha: 1)
         }
 
         return cell
@@ -81,29 +82,13 @@ class ListViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             let scorecard = scorecards[indexPath.row]
-            print("Delete scorecard id=\(scorecard.ID) date=\(scorecard.DateString)")
-            
+            sendDeleteGameRequest(id: scorecard.ID)
             scorecards.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     // MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -113,7 +98,7 @@ class ListViewController: UITableViewController {
             os_log("Adding a new game.", log: OSLog.default, type: .debug)
 
             case "ShowDetail":
-            guard let scorecardDetailViewController = segue.destination as? ScorecardTableViewController else {
+            guard let scorecardDetailViewController = segue.destination as? ScorecardController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
 
@@ -152,7 +137,6 @@ class ListViewController: UITableViewController {
     
     private func showActivityIndicator() {
         indicator.startAnimating()
-        indicator.backgroundColor = .white
     }
     
     private func hideActivityIndicator() {
@@ -166,7 +150,7 @@ class ListViewController: UITableViewController {
     
     private func loadScorecards() {
         showActivityIndicator()
-        sendPostRequest(url: "https://jlemon.org/golf/listentries", id: -1) { (result) -> () in
+        sendGameRequest(url: "https://jlemon.org/golf/listentries", id: -1) { (result) -> () in
             let decoder = JSONDecoder()
             do {
                 self.scorecards = try decoder.decode([ScorecardListing].self, from: result!)
