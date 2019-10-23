@@ -12,7 +12,7 @@ class Scorecard: Codable {
 
     //MARK: Properties
     var ID: Int
-    var Date: String
+    var DateString: String
     var People: String
     var Location: String
     var Holes: Int
@@ -21,24 +21,37 @@ class Scorecard: Codable {
     var Scores: [[Score]] = []
     var Players: [Player]
     
-    var queues: [Int: DispatchWorkItem] = [Int: DispatchWorkItem]()
+    var age: Int = 0
     var curTask: DispatchWorkItem = DispatchWorkItem {}
     
     private enum CodingKeys: String, CodingKey {
-        case ID, Date, People, Location, Holes, LowestScore, Scores, Players
+        case ID, DateString, People, Location, Holes, LowestScore, Scores, Players
     }
 
     //MARK: Initialization
     init(listing: ScorecardListing) {
         // Initialize stored properties.
         self.ID = listing.ID
-        self.Date = listing.DateString
+        self.DateString = listing.DateString
         self.People = listing.People
         self.Location = listing.Location
         self.Holes = listing.HoleCount
         self.LowestScore = 200
         self.Scores = [[Score]]()
         self.Players = [Player]()
+        
+        // Calculate age of game by converting date string to date
+        // and subtracting from now
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM dd yyyy"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        let date = dateFormatter.date(from:self.DateString)!
+        
+        let calendar = Calendar.current
+        let startOfNow = calendar.startOfDay(for: Date())
+        let startOfTimeStamp = calendar.startOfDay(for: date)
+        let components = calendar.dateComponents([.day], from: startOfTimeStamp, to: startOfNow)
+        age = components.day!
     }
     
     func load(loaded: @escaping () -> Void) {
@@ -59,10 +72,17 @@ class Scorecard: Codable {
     
     func isComplete() -> Bool {
         var complete = true
+        
+        // Check if any of the scores in the first column are 0
         for hole in 0..<self.Holes {
             if self.Scores[hole][0].Score == 0 { complete = false }
         }
+        
         return complete
+    }
+    
+    func isNewGame() -> Bool {
+        return age < 1
     }
     
     func getPlayerIDs() -> [String] {
