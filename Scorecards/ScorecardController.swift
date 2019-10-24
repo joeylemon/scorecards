@@ -21,10 +21,6 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
     var scorecard: Scorecard?
     var dataLoaded = false
     
-    // Holds a cell index to flash as red
-    // Set to IndexPath() to not flash anything
-    var flashWarning: IndexPath = IndexPath()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -119,10 +115,6 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 cell.label.text = String(score)
             }
         }
-        
-        if indexPath == flashWarning {
-            cell.label.textColor = UIColor.red
-        }
 
         return cell
     }
@@ -130,17 +122,6 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // Only allow selecting score cells
         if indexPath.item == 0 || indexPath.section <= 1 || indexPath.section == getTotalRows() - 1 { return }
-        
-        if !(scorecard?.isNewGame() ?? false) {
-            flashWarning = indexPath
-            collectionView.reloadData()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.flashWarning = IndexPath()
-                collectionView.reloadData()
-            }
-            
-            return
-        }
         
         scorecard?.incrementScore(hole: indexPath.section-2, playerIndex: indexPath.item-1)
         collectionView.reloadData()

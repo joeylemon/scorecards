@@ -20,7 +20,7 @@ class ListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.rowHeight = 115
+        self.tableView.rowHeight = 121
         self.tableView.tableFooterView = UIView() // Only show bottom separators between cells
         
         activityIndicator()
@@ -64,6 +64,10 @@ class ListViewController: UITableViewController {
         
         cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
         if scorecard.Winner == "t" {
+            // Tie
+            cell.rowImage.tintColor = UIColor(red: 201.0/255.0, green: 117.0/255.0, blue: 0.0/255.0, alpha: 1)
+        } else if scorecard.Winner == "i" {
+            // Incomplete
             cell.rowImage.tintColor = UIColor(red: 201.0/255.0, green: 201.0/255.0, blue: 0.0/255.0, alpha: 1)
         } else {
             cell.rowImage.tintColor = UIColor(red: 41.0/255.0, green: 141.0/255.0, blue: 36.0/255.0, alpha: 1)
@@ -74,7 +78,6 @@ class ListViewController: UITableViewController {
 
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
 
@@ -86,8 +89,6 @@ class ListViewController: UITableViewController {
             sendDeleteGameRequest(id: scorecard.ID)
             scorecards.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
 

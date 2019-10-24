@@ -18,6 +18,10 @@ class ScorecardListing: Codable {
     var Location: String
     var HoleCount: Int
     var Winner: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case ID, DateString, DurationString, People, Location, HoleCount, Winner
+    }
 
     //MARK: Initialization
     init(ID: Int, DateString: String, DurationString: String, People: String, Location: String, HoleCount: Int, Winner: String) {

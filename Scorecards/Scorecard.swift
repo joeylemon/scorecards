@@ -39,19 +39,6 @@ class Scorecard: Codable {
         self.LowestScore = 200
         self.Scores = [[Score]]()
         self.Players = [Player]()
-        
-        // Calculate age of game by converting date string to date
-        // and subtracting from now
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM dd yyyy"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        let date = dateFormatter.date(from:self.DateString)!
-        
-        let calendar = Calendar.current
-        let startOfNow = calendar.startOfDay(for: Date())
-        let startOfTimeStamp = calendar.startOfDay(for: date)
-        let components = calendar.dateComponents([.day], from: startOfTimeStamp, to: startOfNow)
-        age = components.day!
     }
     
     func load(loaded: @escaping () -> Void) {
@@ -79,10 +66,6 @@ class Scorecard: Codable {
         }
         
         return complete
-    }
-    
-    func isNewGame() -> Bool {
-        return age < 1
     }
     
     func getPlayerIDs() -> [String] {
