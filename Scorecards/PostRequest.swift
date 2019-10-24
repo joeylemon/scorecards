@@ -93,3 +93,24 @@ func sendDeleteGameRequest(id: Int) {
     })
     task.resume()
 }
+
+func sendCreateGameRequest(lat: Double, lon: Double, players: [String], holes: Int, completion: @escaping () -> ()) {
+    let url = URL(string: "https://jlemon.org/golf/createnew")!
+    let session = URLSession.shared
+
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    let postString = "lat=\(lat)&lon=\(lon)&players=\(players.joined(separator: ","))&holes=\(holes)"
+    request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
+    request.httpBody = postString.data(using: String.Encoding.utf8)
+
+    let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
+        guard error == nil else {
+            print(error ?? "no error")
+            return
+        }
+        
+        completion()
+    })
+    task.resume()
+}

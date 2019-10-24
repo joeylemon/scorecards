@@ -109,7 +109,6 @@ class Scorecard: Codable {
         
         curTask.cancel()
         let task = DispatchWorkItem {
-            print("post new scores")
             sendSetScoreRequest(id: self.ID, scores: self.Scores, playerIDs: self.getPlayerIDs(), completion: { result in
                 self.curTask.cancel()
             }, incomplete: {

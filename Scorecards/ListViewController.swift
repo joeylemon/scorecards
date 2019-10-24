@@ -20,7 +20,7 @@ class ListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.rowHeight = 95
+        self.tableView.rowHeight = 115
         self.tableView.tableFooterView = UIView() // Only show bottom separators between cells
         
         activityIndicator()
@@ -60,6 +60,7 @@ class ListViewController: UITableViewController {
         cell.dateLabel.text = scorecard.DateString
         cell.peopleLabel.text = scorecard.People
         cell.locationLabel.text = scorecard.Location
+        cell.durationLabel.text = scorecard.DurationString
         
         cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
         if scorecard.Winner == "t" {
@@ -120,9 +121,16 @@ class ListViewController: UITableViewController {
     
     //MARK: Actions
     @IBAction func unwindToScorecardList(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.source as? CreateViewController, let creation = sourceViewController.didCreate {
-            if creation == 1 {
-                self.loadScorecards()
+        if let gameCreation = sender.source as? CreateGameController, let creation = gameCreation.didCreate {
+            if creation == 1 && gameCreation.playerIDs.count > 0 {
+                showActivityIndicator()
+                
+                let loc = gameCreation.getCurrentLocation()?.coordinate
+                sendCreateGameRequest(lat: loc?.latitude ?? 0, lon: loc?.longitude ?? 0, players: gameCreation.playerIDs, holes: gameCreation.holes) {
+                    DispatchQueue.main.async {
+                        self.loadScorecards()
+                    }
+                }
             }
         }
     }

@@ -21,8 +21,7 @@
 		12B4D240235947D70025DFFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12B4D23E235947D70025DFFD /* LaunchScreen.storyboard */; };
 		12B4D24823594A820025DFFD /* Scorecard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D24723594A820025DFFD /* Scorecard.swift */; };
 		12B4D24A23594B4C0025DFFD /* ScorecardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D24923594B4C0025DFFD /* ScorecardTableViewCell.swift */; };
-		12B4D24E235979570025DFFD /* CreateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B4D24D235979570025DFFD /* CreateViewController.swift */; };
-		12EA176A236115C700EEEDC4 /* PlayerSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EA1769236115C700EEEDC4 /* PlayerSelectCell.swift */; };
+		12EA176C23611B0F00EEEDC4 /* CreateGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EA176B23611B0F00EEEDC4 /* CreateGameController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,8 +41,7 @@
 		12B4D241235947D80025DFFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12B4D24723594A820025DFFD /* Scorecard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scorecard.swift; sourceTree = "<group>"; };
 		12B4D24923594B4C0025DFFD /* ScorecardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorecardTableViewCell.swift; sourceTree = "<group>"; };
-		12B4D24D235979570025DFFD /* CreateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateViewController.swift; sourceTree = "<group>"; };
-		12EA1769236115C700EEEDC4 /* PlayerSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSelectCell.swift; sourceTree = "<group>"; };
+		12EA176B23611B0F00EEEDC4 /* CreateGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGameController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,9 +75,8 @@
 			isa = PBXGroup;
 			children = (
 				121D927A235E4C4D006889E4 /* ScorecardController.swift */,
+				12EA176B23611B0F00EEEDC4 /* CreateGameController.swift */,
 				121D9276235E4BDB006889E4 /* ScoreCell.swift */,
-				12EA1769236115C700EEEDC4 /* PlayerSelectCell.swift */,
-				12B4D24D235979570025DFFD /* CreateViewController.swift */,
 				12B4D233235947D70025DFFD /* AppDelegate.swift */,
 				12B4D235235947D70025DFFD /* SceneDelegate.swift */,
 				12B4D237235947D70025DFFD /* ListViewController.swift */,
@@ -170,10 +167,8 @@
 			files = (
 				121D927B235E4C4D006889E4 /* ScorecardController.swift in Sources */,
 				12B4D24823594A820025DFFD /* Scorecard.swift in Sources */,
-				12EA176A236115C700EEEDC4 /* PlayerSelectCell.swift in Sources */,
 				128DC5FE235ABC840055B872 /* PostRequest.swift in Sources */,
 				12B4D238235947D70025DFFD /* ListViewController.swift in Sources */,
-				12B4D24E235979570025DFFD /* CreateViewController.swift in Sources */,
 				128DC5FC235A25820055B872 /* ScorecardListing.swift in Sources */,
 				121D9277235E4BDB006889E4 /* ScoreCell.swift in Sources */,
 				128DC5FA235A109D0055B872 /* Score.swift in Sources */,
@@ -181,6 +176,7 @@
 				12B4D24A23594B4C0025DFFD /* ScorecardTableViewCell.swift in Sources */,
 				128DC5F8235A0F2B0055B872 /* Player.swift in Sources */,
 				12B4D236235947D70025DFFD /* SceneDelegate.swift in Sources */,
+				12EA176C23611B0F00EEEDC4 /* CreateGameController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

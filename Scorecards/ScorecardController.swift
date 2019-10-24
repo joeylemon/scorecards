@@ -147,7 +147,7 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var cellHeight = 70
+        var cellHeight = 63
         var cellWidth = (collectionView.bounds.size.width - 50) / CGFloat(getTotalColumns() - 1)
         
         if indexPath.section == 0 {
