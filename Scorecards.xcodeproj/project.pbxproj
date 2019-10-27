@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		121D9277235E4BDB006889E4 /* ScoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D9276235E4BDB006889E4 /* ScoreCell.swift */; };
 		121D927B235E4C4D006889E4 /* ScorecardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D927A235E4C4D006889E4 /* ScorecardController.swift */; };
+		1258A1BA23664264003FF88C /* Course.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1258A1B923664264003FF88C /* Course.swift */; };
 		128DC5F8235A0F2B0055B872 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5F7235A0F2B0055B872 /* Player.swift */; };
 		128DC5FA235A109D0055B872 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5F9235A109D0055B872 /* Score.swift */; };
 		128DC5FC235A25820055B872 /* ScorecardListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5FB235A25820055B872 /* ScorecardListing.swift */; };
@@ -27,6 +28,7 @@
 /* Begin PBXFileReference section */
 		121D9276235E4BDB006889E4 /* ScoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCell.swift; sourceTree = "<group>"; };
 		121D927A235E4C4D006889E4 /* ScorecardController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorecardController.swift; sourceTree = "<group>"; };
+		1258A1B923664264003FF88C /* Course.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Course.swift; sourceTree = "<group>"; };
 		128DC5F7235A0F2B0055B872 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		128DC5F9235A109D0055B872 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		128DC5FB235A25820055B872 /* ScorecardListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorecardListing.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				12B4D24923594B4C0025DFFD /* ScorecardTableViewCell.swift */,
 				12B4D24723594A820025DFFD /* Scorecard.swift */,
 				128DC5FB235A25820055B872 /* ScorecardListing.swift */,
+				1258A1B923664264003FF88C /* Course.swift */,
 				128DC5F9235A109D0055B872 /* Score.swift */,
 				128DC5F7235A0F2B0055B872 /* Player.swift */,
 				12B4D239235947D70025DFFD /* Main.storyboard */,
@@ -165,6 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1258A1BA23664264003FF88C /* Course.swift in Sources */,
 				121D927B235E4C4D006889E4 /* ScorecardController.swift in Sources */,
 				12B4D24823594A820025DFFD /* Scorecard.swift in Sources */,
 				128DC5FE235ABC840055B872 /* PostRequest.swift in Sources */,

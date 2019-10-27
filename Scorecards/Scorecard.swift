@@ -14,10 +14,11 @@ class Scorecard: Codable {
     var ID: Int
     var DateString: String
     var People: String
-    var Location: String
+    var Course: Course
     var Holes: Int
     var LowestScore: Int
     
+    var Pars: [Int]
     var Scores: [[Score]] = []
     var Players: [Player]
     
@@ -25,7 +26,7 @@ class Scorecard: Codable {
     var curTask: DispatchWorkItem = DispatchWorkItem {}
     
     private enum CodingKeys: String, CodingKey {
-        case ID, DateString, People, Location, Holes, LowestScore, Scores, Players
+        case ID, DateString, People, Course, Holes, LowestScore, Pars, Scores, Players
     }
 
     //MARK: Initialization
@@ -34,11 +35,12 @@ class Scorecard: Codable {
         self.ID = listing.ID
         self.DateString = listing.DateString
         self.People = listing.People
-        self.Location = listing.Location
+        self.Course = listing.Course
         self.Holes = listing.HoleCount
         self.LowestScore = 200
         self.Scores = [[Score]]()
         self.Players = [Player]()
+        self.Pars = [Int]()
     }
     
     func load(loaded: @escaping () -> Void) {
@@ -48,6 +50,7 @@ class Scorecard: Codable {
                 let jsonScorecard = try decoder.decode(Scorecard.self, from: result!)
                 self.Scores = jsonScorecard.Scores
                 self.Players = jsonScorecard.Players
+                self.Pars = jsonScorecard.Pars
                 self.LowestScore = jsonScorecard.LowestScore
                 
                 loaded()
@@ -66,6 +69,18 @@ class Scorecard: Codable {
         }
         
         return complete
+    }
+    
+    func getParForHole(hole: Int) -> Int {
+        return self.Pars[hole]
+    }
+    
+    func getParForGame() -> Int {
+        var sum = 0
+        for hole in 0..<self.Holes {
+            sum += self.Pars[hole]
+        }
+        return sum
     }
     
     func getPlayerIDs() -> [String] {

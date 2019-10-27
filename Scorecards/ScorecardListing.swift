@@ -15,22 +15,22 @@ class ScorecardListing: Codable {
     var DateString: String
     var DurationString: String
     var People: String
-    var Location: String
+    var Course: Course
     var HoleCount: Int
     var Winner: String
     
     private enum CodingKeys: String, CodingKey {
-        case ID, DateString, DurationString, People, Location, HoleCount, Winner
+        case ID, DateString, DurationString, People, Course, HoleCount, Winner
     }
 
     //MARK: Initialization
-    init(ID: Int, DateString: String, DurationString: String, People: String, Location: String, HoleCount: Int, Winner: String) {
+    init(ID: Int, DateString: String, DurationString: String, People: String, Course: Course, HoleCount: Int, Winner: String) {
         // Initialize stored properties.
         self.ID = ID
         self.DateString = DateString
         self.DurationString = DurationString
         self.People = People
-        self.Location = Location
+        self.Course = Course
         self.HoleCount = HoleCount
         self.Winner = Winner
     }

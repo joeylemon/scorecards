@@ -59,7 +59,7 @@ class ListViewController: UITableViewController {
         let scorecard = scorecards[indexPath.row]
         cell.dateLabel.text = scorecard.DateString
         cell.peopleLabel.text = scorecard.People
-        cell.locationLabel.text = scorecard.Location
+        cell.locationLabel.text = scorecard.Course.Name
         cell.durationLabel.text = scorecard.DurationString
         
         cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
