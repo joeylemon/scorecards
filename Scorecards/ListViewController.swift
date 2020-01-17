@@ -127,7 +127,7 @@ class ListViewController: UITableViewController {
                 showActivityIndicator()
                 
                 let loc = gameCreation.getCurrentLocation()?.coordinate
-                sendCreateGameRequest(lat: loc?.latitude ?? 0, lon: loc?.longitude ?? 0, players: gameCreation.playerIDs, holes: gameCreation.holes) {
+                sendCreateGameRequest(lat: loc?.latitude ?? 0, lon: loc?.longitude ?? 0, players: gameCreation.playerIDs, front: gameCreation.front, holes: gameCreation.holes) {
                     DispatchQueue.main.async {
                         self.loadScorecards()
                     }

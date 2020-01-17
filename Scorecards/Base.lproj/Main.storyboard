@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dbl-Ie-BnF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dbl-Ie-BnF">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -113,7 +113,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="LYr-BB-YSt">
-                                <rect key="frame" x="98" y="170" width="218" height="502"/>
+                                <rect key="frame" x="98" y="145" width="218" height="552"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="FNS-9r-sTS">
                                         <rect key="frame" x="0.0" y="0.0" width="218" height="90"/>
@@ -133,14 +133,26 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kES-0U-YT4">
-                                        <rect key="frame" x="0.0" y="108" width="218" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="6oM-tb-uEe"/>
-                                        </constraints>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="0T8-lh-rBG">
+                                        <rect key="frame" x="0.0" y="108" width="218" height="90"/>
+                                        <subviews>
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HrV-Vl-aLO">
+                                                <rect key="frame" x="0.0" y="1" width="100" height="87.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="90" id="DoV-lw-zUF"/>
+                                                    <constraint firstAttribute="width" constant="100" id="EZ9-9W-ffC"/>
+                                                </constraints>
+                                                <state key="normal" backgroundImage="f.square.fill" catalog="system"/>
+                                            </button>
+                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nfC-EA-WUC">
+                                                <rect key="frame" x="118" y="1" width="100" height="87.5"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="2"/>
+                                                <state key="normal" backgroundImage="b.square.fill" catalog="system"/>
+                                            </button>
+                                        </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="Saz-pt-I8a">
-                                        <rect key="frame" x="0.0" y="166" width="218" height="100"/>
+                                        <rect key="frame" x="0.0" y="216" width="218" height="100"/>
                                         <subviews>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pbU-y3-nuu">
                                                 <rect key="frame" x="0.0" y="0.5" width="100" height="99"/>
@@ -157,7 +169,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="jTZ-TA-6P7">
-                                        <rect key="frame" x="0.0" y="284" width="218" height="100"/>
+                                        <rect key="frame" x="0.0" y="334" width="218" height="100"/>
                                         <subviews>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPo-NL-mQe">
                                                 <rect key="frame" x="0.0" y="0.5" width="100" height="99"/>
@@ -175,7 +187,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="Dlt-0h-rJv">
-                                        <rect key="frame" x="0.0" y="402" width="218" height="100"/>
+                                        <rect key="frame" x="0.0" y="452" width="218" height="100"/>
                                         <subviews>
                                             <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="37J-1m-EWd">
                                                 <rect key="frame" x="0.0" y="0.5" width="100" height="99"/>
@@ -220,6 +232,8 @@
                         <outletCollection property="playerButtons" destination="B71-pU-APu" collectionClass="NSMutableArray" id="SOF-dy-oxv"/>
                         <outletCollection property="holeButtons" destination="25m-bF-Cpq" collectionClass="NSMutableArray" id="TN2-4U-jmk"/>
                         <outletCollection property="holeButtons" destination="L8e-hT-slp" collectionClass="NSMutableArray" id="GwF-gp-45Q"/>
+                        <outletCollection property="frontBackButtons" destination="HrV-Vl-aLO" collectionClass="NSMutableArray" id="So5-6f-w6z"/>
+                        <outletCollection property="frontBackButtons" destination="nfC-EA-WUC" collectionClass="NSMutableArray" id="Ggs-OX-dFr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GzH-9T-PLi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -328,8 +342,10 @@
     <resources>
         <image name="18.square.fill" catalog="system" width="64" height="56"/>
         <image name="9.square.fill" catalog="system" width="64" height="56"/>
+        <image name="b.square.fill" catalog="system" width="64" height="56"/>
         <image name="c.circle.fill" catalog="system" width="64" height="60"/>
         <image name="d.circle.fill" catalog="system" width="64" height="60"/>
+        <image name="f.square.fill" catalog="system" width="64" height="56"/>
         <image name="j.circle.fill" catalog="system" width="64" height="60"/>
         <image name="location.fill" catalog="system" width="64" height="56"/>
         <image name="m.circle.fill" catalog="system" width="64" height="60"/>

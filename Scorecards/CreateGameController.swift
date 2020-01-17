@@ -17,10 +17,12 @@ class CreateGameController: UIViewController {
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
     @IBOutlet var playerButtons: [UIButton]!
+    @IBOutlet var frontBackButtons: [UIButton]!
     @IBOutlet var holeButtons: [UIButton]!
     
     let locManager = CLLocationManager()
     var playerIDs: [String] = [String]()
+    var front: Bool = true
     var holes: Int = 9
     var didCreate: Int?
 
@@ -34,6 +36,19 @@ class CreateGameController: UIViewController {
             let image = button.backgroundImage(for: .normal)?.withRenderingMode(.alwaysTemplate)
             button.setBackgroundImage(image, for: .normal)
             button.tintColor = UIColor.secondaryLabel
+        }
+        
+        for button in frontBackButtons {
+            button.addTarget(self, action: #selector(frontBackButtonSelected), for: .touchUpInside)
+            let image = button.backgroundImage(for: .normal)?.withRenderingMode(.alwaysTemplate)
+            button.setBackgroundImage(image, for: .normal)
+            
+            // Tag==1: front    Tag==2: back
+            if button.tag == 1 {
+                button.tintColor = goldColor
+            } else {
+                button.tintColor = UIColor.secondaryLabel
+            }
         }
         
         for button in holeButtons {
@@ -74,6 +89,25 @@ class CreateGameController: UIViewController {
         }
     }
     
+    @objc func frontBackButtonSelected(sender: UIButton!) {
+        // Don't allow user to select front/back when choosing 18 holes
+        if holes == 18 {
+            return
+        }
+        
+        // Tag comes from Attributes Inspector -> View -> Tag
+        // Tag==1: front    Tag==2: back
+        front = sender.tag == 1
+        
+        for button in frontBackButtons {
+            if button.tag == sender.tag {
+                button.tintColor = goldColor
+            } else {
+                button.tintColor = UIColor.secondaryLabel
+            }
+        }
+    }
+    
     @objc func holeButtonSelected(sender: UIButton!) {
         // Hole count comes from Attributes Inspector -> View -> Tag
         holes = sender.tag
@@ -84,6 +118,17 @@ class CreateGameController: UIViewController {
             } else {
                 button.tintColor = UIColor.secondaryLabel
             }
+        }
+        
+        // If user selects 18 holes, gray out the front/back buttons
+        if holes == 18 {
+            for b in frontBackButtons {
+                b.tintColor = UIColor.quaternaryLabel
+            }
+        } else {
+            front = true
+            frontBackButtons[0].tintColor = goldColor
+            frontBackButtons[1].tintColor = UIColor.secondaryLabel
         }
     }
     

@@ -15,6 +15,7 @@ class Scorecard: Codable {
     var DateString: String
     var People: String
     var Course: Course
+    var Front: Bool
     var Holes: Int
     var LowestScore: Int
     
@@ -26,7 +27,7 @@ class Scorecard: Codable {
     var curTask: DispatchWorkItem = DispatchWorkItem {}
     
     private enum CodingKeys: String, CodingKey {
-        case ID, DateString, People, Course, Holes, LowestScore, Pars, Scores, Players
+        case ID, DateString, People, Course, Front, Holes, LowestScore, Pars, Scores, Players
     }
 
     //MARK: Initialization
@@ -36,6 +37,7 @@ class Scorecard: Codable {
         self.DateString = listing.DateString
         self.People = listing.People
         self.Course = listing.Course
+        self.Front = true
         self.Holes = listing.HoleCount
         self.LowestScore = 200
         self.Scores = [[Score]]()
@@ -52,6 +54,7 @@ class Scorecard: Codable {
                 self.Players = jsonScorecard.Players
                 self.Pars = jsonScorecard.Pars
                 self.LowestScore = jsonScorecard.LowestScore
+                self.Front = jsonScorecard.Front
                 
                 loaded()
             } catch {

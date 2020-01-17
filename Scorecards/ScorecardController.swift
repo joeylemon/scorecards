@@ -98,7 +98,13 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 // Hole number
                 cell.label.font = cell.label.font.withSize(14)
                 cell.label.textColor = UIColor.tertiaryLabel
-                cell.label.text = String(indexPath.section-1)
+                
+                var hole = indexPath.section-1
+                if !scorecard!.Front {
+                    hole = 9 + hole
+                }
+                
+                cell.label.text = String(hole)
             } else if indexPath.item > 0 && indexPath.item < getTotalColumns() - 1 {
                 // Player score
                 cell.layer.borderColor = UIColor.secondaryLabel.withAlphaComponent(0.25).cgColor
