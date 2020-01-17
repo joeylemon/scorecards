@@ -1,0 +1,227 @@
+2020/01/17 02:47:53 Listening on :8000
+
+[35m(/home/joey/go/src/golf/routes.go:27)[0m 
+[33m[2020-01-17 02:51:33][0m  [36;1m[12.73ms][0m  SELECT * FROM `games`   ORDER BY id desc  
+[36;31m[31 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:27)[0m 
+[33m[2020-01-17 02:51:33][0m  [36;1m[1.11ms][0m  SELECT * FROM `courses`  WHERE (`id` IN (1,7))  
+[36;31m[2 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:33)[0m 
+[33m[2020-01-17 02:51:33][0m  [36;1m[4.30ms][0m  SELECT * FROM `game_players`    
+[36;31m[119 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:33)[0m 
+[33m[2020-01-17 02:51:33][0m  [36;1m[1.81ms][0m  SELECT * FROM `players`  WHERE (`id` IN (3,6,4,1,2,5))  
+[36;31m[6 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:40)[0m 
+[33m[2020-01-17 02:51:33][0m  [36;1m[9.45ms][0m  SELECT * FROM `game_scores`    
+[36;31m[1161 rows affected or returned ][0m 
+
+[95m[4mForm: /deletegame[0m
+[36mgame [0m..... 127
+
+[35m(/home/joey/go/src/golf/routes.go:340)[0m 
+[33m[2020-01-17 02:51:37][0m  [36;1m[2.05ms][0m  SELECT * FROM `games`  WHERE (id = '127')  
+[36;31m[1 rows affected or returned ][0m 
+2020/01/17 02:51:37 Time since ending: 0.099835
+
+[35m(/home/joey/go/src/golf/routes.go:352)[0m 
+[33m[2020-01-17 02:51:37][0m  [36;1m[0.65ms][0m  DELETE FROM `games`  WHERE (id = '127')  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:357)[0m 
+[33m[2020-01-17 02:51:37][0m  [36;1m[0.95ms][0m  DELETE FROM `game_scores`  WHERE (game_id = '127')  
+[36;31m[9 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:362)[0m 
+[33m[2020-01-17 02:51:37][0m  [36;1m[0.31ms][0m  DELETE FROM `game_players`  WHERE (game_id = '127')  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:27)[0m 
+[33m[2020-01-17 02:51:38][0m  [36;1m[3.00ms][0m  SELECT * FROM `games`   ORDER BY id desc  
+[36;31m[30 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:27)[0m 
+[33m[2020-01-17 02:51:38][0m  [36;1m[1.39ms][0m  SELECT * FROM `courses`  WHERE (`id` IN (1,7))  
+[36;31m[2 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:33)[0m 
+[33m[2020-01-17 02:51:38][0m  [36;1m[3.10ms][0m  SELECT * FROM `game_players`    
+[36;31m[118 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:33)[0m 
+[33m[2020-01-17 02:51:38][0m  [36;1m[0.85ms][0m  SELECT * FROM `players`  WHERE (`id` IN (2,5,3,6,4,1))  
+[36;31m[6 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:40)[0m 
+[33m[2020-01-17 02:51:39][0m  [36;1m[10.30ms][0m  SELECT * FROM `game_scores`    
+[36;31m[1152 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:27)[0m 
+[33m[2020-01-17 02:53:01][0m  [36;1m[1.11ms][0m  SELECT * FROM `games`   ORDER BY id desc  
+[36;31m[30 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:27)[0m 
+[33m[2020-01-17 02:53:01][0m  [36;1m[1.26ms][0m  SELECT * FROM `courses`  WHERE (`id` IN (1,7))  
+[36;31m[2 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:33)[0m 
+[33m[2020-01-17 02:53:01][0m  [36;1m[3.44ms][0m  SELECT * FROM `game_players`    
+[36;31m[118 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:33)[0m 
+[33m[2020-01-17 02:53:01][0m  [36;1m[0.86ms][0m  SELECT * FROM `players`  WHERE (`id` IN (3,6,4,1,2,5))  
+[36;31m[6 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:40)[0m 
+[33m[2020-01-17 02:53:01][0m  [36;1m[11.07ms][0m  SELECT * FROM `game_scores`    
+[36;31m[1152 rows affected or returned ][0m 
+
+[95m[4mForm: /createnew[0m
+[36mlon     [0m..... 0.0
+[36mplayers [0m..... 1
+[36mfront   [0m..... true
+[36mholes   [0m..... 18
+[36mlat     [0m..... 0.0
+
+[35m(/home/joey/go/src/golf/routes.go:145)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[1.51ms][0m  INSERT  INTO `games` (`hole_count`,`course_id`,`front`,`date`,`end_time`) VALUES (18,1,true,'2020-01-17 02:53:23','2020-01-17 10:53:23')  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:154)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[3.42ms][0m  INSERT  INTO `game_players` (`game_id`,`player_id`) VALUES (128,1)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.31ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,1,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.28ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,2,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.23ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,3,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.23ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,4,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.23ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,5,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.22ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,6,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.26ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,7,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.23ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,8,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.29ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,9,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.23ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,10,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.22ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,11,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.23ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,12,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.22ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,13,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.22ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,14,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.22ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,15,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.21ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,16,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.21ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,17,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:165)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.22ms][0m  INSERT  INTO `game_scores` (`game_id`,`player_id`,`hole_num`,`score`) VALUES (128,1,18,0)  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:27)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[1.68ms][0m  SELECT * FROM `games`   ORDER BY id desc  
+[36;31m[31 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:27)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[0.84ms][0m  SELECT * FROM `courses`  WHERE (`id` IN (1,7))  
+[36;31m[2 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:33)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[1.32ms][0m  SELECT * FROM `game_players`    
+[36;31m[119 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:33)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[1.08ms][0m  SELECT * FROM `players`  WHERE (`id` IN (3,6,4,1,2,5))  
+[36;31m[6 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:40)[0m 
+[33m[2020-01-17 02:53:23][0m  [36;1m[12.89ms][0m  SELECT * FROM `game_scores`    
+[36;31m[1170 rows affected or returned ][0m 
+
+[95m[4mForm: /getgamenew[0m
+[36mid [0m..... 128
+
+[35m(/home/joey/go/src/golf/routes.go:185)[0m 
+[33m[2020-01-17 02:53:24][0m  [36;1m[0.57ms][0m  SELECT * FROM `games`  WHERE (id = '128')  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:192)[0m 
+[33m[2020-01-17 02:53:24][0m  [36;1m[7.73ms][0m  SELECT * FROM `course_pars`  WHERE (course_id = 1) ORDER BY hole_num asc  
+[36;31m[18 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:207)[0m 
+[33m[2020-01-17 02:53:24][0m  [36;1m[0.84ms][0m   SELECT p.* FROM game_players gp INNER JOIN players p ON p.id=gp.player_id WHERE gp.game_id = '128'  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:219)[0m 
+[33m[2020-01-17 02:53:24][0m  [36;1m[1.65ms][0m  SELECT * FROM `game_scores`  WHERE (game_id = '128')  
+[36;31m[18 rows affected or returned ][0m 
+
+[95m[4mForm: /deletegame[0m
+[36mgame [0m..... 128
+
+[35m(/home/joey/go/src/golf/routes.go:340)[0m 
+[33m[2020-01-17 02:53:31][0m  [36;1m[2.02ms][0m  SELECT * FROM `games`  WHERE (id = '128')  
+[36;31m[1 rows affected or returned ][0m 
+2020/01/17 02:53:31 Time since ending: -7.997927
+
+[35m(/home/joey/go/src/golf/routes.go:352)[0m 
+[33m[2020-01-17 02:53:31][0m  [36;1m[0.35ms][0m  DELETE FROM `games`  WHERE (id = '128')  
+[36;31m[1 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:357)[0m 
+[33m[2020-01-17 02:53:31][0m  [36;1m[0.90ms][0m  DELETE FROM `game_scores`  WHERE (game_id = '128')  
+[36;31m[18 rows affected or returned ][0m 
+
+[35m(/home/joey/go/src/golf/routes.go:362)[0m 
+[33m[2020-01-17 02:53:31][0m  [36;1m[0.42ms][0m  DELETE FROM `game_players`  WHERE (game_id = '128')  
+[36;31m[1 rows affected or returned ][0m 
