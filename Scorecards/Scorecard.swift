@@ -80,9 +80,19 @@ class Scorecard: Codable {
     
     func getParForGame() -> Int {
         var sum = 0
-        for hole in 0..<self.Holes {
+        
+        // Begin/end change depending on if the game is front nine or back nine
+        var begin = 0
+        var end = self.Holes
+        if !self.Front {
+            begin = 9
+            end = 18
+        }
+        
+        for hole in begin..<end {
             sum += self.Pars[hole]
         }
+        
         return sum
     }
     
