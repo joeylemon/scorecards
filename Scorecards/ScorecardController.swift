@@ -121,9 +121,15 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 cell.layer.borderColor = UIColor.secondaryLabel.withAlphaComponent(0.25).cgColor
                 cell.layer.borderWidth = 1
                 
+                var hole = indexPath.section-1
+                if !scorecard!.Front {
+                    hole = 9 + hole
+                }
+                let par = scorecard!.getParForHole(hole: hole - 1)
+                
                 cell.label.font = cell.label.font.withSize(30)
                 cell.label.textColor = UIColor.secondaryLabel
-                cell.label.text = String(scorecard!.getParForHole(hole: indexPath.section-2))
+                cell.label.text = String(par)
             }
         } else if indexPath.section == getTotalRows() - 1 {
             if indexPath.item > 0 && indexPath.item < getTotalColumns() - 1 {
