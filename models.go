@@ -82,3 +82,13 @@ type GameScore struct {
 func (GameScore) TableName() string {
 	return "game_scores"
 }
+
+type LeaderboardQuery struct {
+	Title    string
+	Query    string
+}
+
+type LeaderboardEntry struct {
+	Name  string
+	Value string
+}
