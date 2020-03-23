@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dbl-Ie-BnF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pdp-dT-YPE">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
@@ -301,10 +301,11 @@
             </objects>
             <point key="canvasLocation" x="1818.840579710145" y="424.55357142857139"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Scores-->
         <scene sceneID="hre-VF-laC">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Dbl-Ie-BnF" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Scores" image="list.number" catalog="system" id="hG9-sN-Ty3"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9mF-L9-8Aj">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -338,6 +339,23 @@
             </objects>
             <point key="canvasLocation" x="1818.840579710145" y="-239.0625"/>
         </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Ugn-qQ-iSU">
+            <objects>
+                <tabBarController id="pdp-dT-YPE" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="19z-SP-92v">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Dbl-Ie-BnF" kind="relationship" relationship="viewControllers" id="V28-ix-gLz"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DEK-bD-6k1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-775" y="127"/>
+        </scene>
     </scenes>
     <resources>
         <image name="18.square.fill" catalog="system" width="64" height="56"/>
@@ -347,6 +365,7 @@
         <image name="d.circle.fill" catalog="system" width="64" height="60"/>
         <image name="f.square.fill" catalog="system" width="64" height="56"/>
         <image name="j.circle.fill" catalog="system" width="64" height="60"/>
+        <image name="list.number" catalog="system" width="64" height="48"/>
         <image name="location.fill" catalog="system" width="64" height="56"/>
         <image name="m.circle.fill" catalog="system" width="64" height="60"/>
         <image name="person.fill" catalog="system" width="64" height="60"/>
