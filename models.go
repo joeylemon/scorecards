@@ -84,11 +84,16 @@ func (GameScore) TableName() string {
 }
 
 type LeaderboardQuery struct {
-	Title    string
-	Query    string
+	Title string
+	Query string
 }
 
 type LeaderboardEntry struct {
 	Name  string
 	Value string
+}
+
+type LeaderboardResult struct {
+	Title   string
+	Entries []LeaderboardEntry
 }
