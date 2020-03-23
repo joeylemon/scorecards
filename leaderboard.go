@@ -19,10 +19,21 @@ import (
 
 var queries []LeaderboardQuery = []LeaderboardQuery{
 	{
-		Title: "Games Played",
+		Title: "Most Games Played",
 		Query: `select p.name,count(gp.player_id) as value from game_players gp
-		left join players p on p.id = gp.player_id
-		group by gp.player_id;`,
+					left join players p on p.id = gp.player_id
+					group by gp.player_id
+					order by count(gp.player_id) desc`,
+	},
+	{
+		Title: "Lowest Score",
+		Query: `select p.name, min(s.total_score) as value from
+					(
+						select player_id, game_id, sum(score) as total_score from game_scores group by game_id, player_id
+					) s
+					left join players p on p.id=s.player_id
+					group by s.player_id
+					order by value`,
 	},
 }
 
