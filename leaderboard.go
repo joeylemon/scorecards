@@ -35,6 +35,8 @@ func ListStatistics(w http.ResponseWriter, r *http.Request) {
 		var result LeaderboardResult
 		result.Title = query.Title
 		db.Raw(query.Query).Scan(&result.Entries)
+
+		results = append(results, result)
 	}
 
 	writeJSON(w, results)
