@@ -17,7 +17,7 @@ import (
 // group by player_id
 // order by score asc limit 1
 
-var queries []LeaderboardQuery = []LeaderboardQuery{
+var queries []LeaderboardQuery = []LeaderboardQuery{\
 	{
 		Title: "Most Games Played",
 		Query: `select p.name,count(gp.player_id) as value from game_players gp
@@ -40,8 +40,8 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 func ListStatistics(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
-	for _, query := range queries {
-		db.Raw(query.Query).Scan(&query.Entries)
+	for i, query := range queries {
+		db.Raw(query.Query).Scan(&queries[i].Entries)
 	}
 
 	writeJSON(w, queries)
