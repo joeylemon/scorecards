@@ -9,7 +9,7 @@ import (
 )
 
 func writeJSON(w http.ResponseWriter, obj interface{}) {
-	json, err := json.MarshalIndent(obj, "", "\t")
+	json, err := json.MarshalIndent(obj, "", "    ")
 	if err != nil {
 		log.Printf("writeJSON error: %v", err)
 		return
