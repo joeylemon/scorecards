@@ -1,6 +1,6 @@
 export MYSQL_CONNECTION=joeylemon:J4Huprat@/golf
 
-all:
+golf: *.go
 	go build -o golf
 
 run:

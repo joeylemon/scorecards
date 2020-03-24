@@ -35,6 +35,36 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 					group by s.player_id
 					order by value`,
 	},
+	{
+		Title: "Most Pars",
+		Query: `select p.name,count(gs.player_id) as value from game_scores gs
+					left join games g on g.id = gs.game_id
+					left join course_pars cp on cp.course_id = g.course_id and IF(g.front,gs.hole_num,gs.hole_num+9) = cp.hole_num
+					left join players p on p.id = gs.player_id
+					where gs.score=cp.par
+					group by gs.player_id
+					order by value desc`,
+	},
+	{
+		Title: "Most Birdies",
+		Query: `select p.name,count(gs.player_id) as value from game_scores gs
+					left join games g on g.id = gs.game_id
+					left join course_pars cp on cp.course_id = g.course_id and IF(g.front,gs.hole_num,gs.hole_num+9) = cp.hole_num
+					left join players p on p.id = gs.player_id
+					where gs.score=cp.par-1
+					group by gs.player_id
+					order by value desc`,
+	},
+	{
+		Title: "Most Eagles",
+		Query: `select p.name,count(gs.player_id) as value from game_scores gs
+					left join games g on g.id = gs.game_id
+					left join course_pars cp on cp.course_id = g.course_id and IF(g.front,gs.hole_num,gs.hole_num+9) = cp.hole_num
+					left join players p on p.id = gs.player_id
+					where gs.score=cp.par-2
+					group by gs.player_id
+					order by value desc`,
+	},
 }
 
 func ListStatistics(w http.ResponseWriter, r *http.Request) {
