@@ -15,7 +15,7 @@ import (
 // select player_id, sum(score) as score
 // from game_scores where game_id=XX
 // group by player_id
-// order by score asc limit 1;
+// order by score asc limit 1
 
 var queries []LeaderboardQuery = []LeaderboardQuery{
 	{
@@ -40,15 +40,9 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 func ListStatistics(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
-	var results []LeaderboardResult
-
 	for _, query := range queries {
-		var result LeaderboardResult
-		result.Title = query.Title
-		db.Raw(query.Query).Scan(&result.Entries)
-
-		results = append(results, result)
+		db.Raw(query.Query).Scan(&query.Entries)
 	}
 
-	writeJSON(w, results)
+	writeJSON(w, queries)
 }
