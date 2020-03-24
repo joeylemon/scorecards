@@ -13,6 +13,9 @@
 		1282E9982429163E003E33F1 /* LeaderboardsListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282E9972429163E003E33F1 /* LeaderboardsListController.swift */; };
 		1282E99A242917A1003E33F1 /* LeaderboardListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282E999242917A1003E33F1 /* LeaderboardListing.swift */; };
 		1282E99C242918C4003E33F1 /* LeaderboardEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282E99B242918C4003E33F1 /* LeaderboardEntry.swift */; };
+		1282E99E24293913003E33F1 /* LeaderboardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282E99D24293913003E33F1 /* LeaderboardTableViewCell.swift */; };
+		1282E9A024293F0A003E33F1 /* LeaderboardListingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282E99F24293F0A003E33F1 /* LeaderboardListingTableViewCell.swift */; };
+		1282E9A22429403D003E33F1 /* LeaderboardDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1282E9A12429403D003E33F1 /* LeaderboardDetailController.swift */; };
 		128DC5F8235A0F2B0055B872 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5F7235A0F2B0055B872 /* Player.swift */; };
 		128DC5FA235A109D0055B872 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5F9235A109D0055B872 /* Score.swift */; };
 		128DC5FC235A25820055B872 /* ScorecardListing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128DC5FB235A25820055B872 /* ScorecardListing.swift */; };
@@ -35,6 +38,9 @@
 		1282E9972429163E003E33F1 /* LeaderboardsListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsListController.swift; sourceTree = "<group>"; };
 		1282E999242917A1003E33F1 /* LeaderboardListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardListing.swift; sourceTree = "<group>"; };
 		1282E99B242918C4003E33F1 /* LeaderboardEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardEntry.swift; sourceTree = "<group>"; };
+		1282E99D24293913003E33F1 /* LeaderboardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardTableViewCell.swift; sourceTree = "<group>"; };
+		1282E99F24293F0A003E33F1 /* LeaderboardListingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardListingTableViewCell.swift; sourceTree = "<group>"; };
+		1282E9A12429403D003E33F1 /* LeaderboardDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardDetailController.swift; sourceTree = "<group>"; };
 		128DC5F7235A0F2B0055B872 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		128DC5F9235A109D0055B872 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
 		128DC5FB235A25820055B872 /* ScorecardListing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScorecardListing.swift; sourceTree = "<group>"; };
@@ -90,6 +96,8 @@
 				12B4D237235947D70025DFFD /* ListViewController.swift */,
 				128DC5FD235ABC840055B872 /* PostRequest.swift */,
 				12B4D24923594B4C0025DFFD /* ScorecardTableViewCell.swift */,
+				1282E99D24293913003E33F1 /* LeaderboardTableViewCell.swift */,
+				1282E99F24293F0A003E33F1 /* LeaderboardListingTableViewCell.swift */,
 				12B4D24723594A820025DFFD /* Scorecard.swift */,
 				128DC5FB235A25820055B872 /* ScorecardListing.swift */,
 				1282E999242917A1003E33F1 /* LeaderboardListing.swift */,
@@ -99,6 +107,7 @@
 				128DC5F7235A0F2B0055B872 /* Player.swift */,
 				12B4D239235947D70025DFFD /* Main.storyboard */,
 				1282E9972429163E003E33F1 /* LeaderboardsListController.swift */,
+				1282E9A12429403D003E33F1 /* LeaderboardDetailController.swift */,
 				12B4D23C235947D70025DFFD /* Assets.xcassets */,
 				12B4D23E235947D70025DFFD /* LaunchScreen.storyboard */,
 				12B4D241235947D80025DFFD /* Info.plist */,
@@ -182,9 +191,12 @@
 				121D927B235E4C4D006889E4 /* ScorecardController.swift in Sources */,
 				12B4D24823594A820025DFFD /* Scorecard.swift in Sources */,
 				128DC5FE235ABC840055B872 /* PostRequest.swift in Sources */,
+				1282E99E24293913003E33F1 /* LeaderboardTableViewCell.swift in Sources */,
 				12B4D238235947D70025DFFD /* ListViewController.swift in Sources */,
 				128DC5FC235A25820055B872 /* ScorecardListing.swift in Sources */,
+				1282E9A024293F0A003E33F1 /* LeaderboardListingTableViewCell.swift in Sources */,
 				121D9277235E4BDB006889E4 /* ScoreCell.swift in Sources */,
+				1282E9A22429403D003E33F1 /* LeaderboardDetailController.swift in Sources */,
 				1282E99C242918C4003E33F1 /* LeaderboardEntry.swift in Sources */,
 				128DC5FA235A109D0055B872 /* Score.swift in Sources */,
 				12B4D234235947D70025DFFD /* AppDelegate.swift in Sources */,

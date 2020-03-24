@@ -33,8 +33,7 @@ class ListViewController: UITableViewController {
         // Use the edit button item provided by the table view controller.
         navigationItem.leftBarButtonItem = editButtonItem
 
-        // Load the sample data.
-        loadScorecards()
+        self.loadScorecards()
     }
 
     // MARK: - Table view data source

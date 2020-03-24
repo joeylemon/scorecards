@@ -20,20 +20,17 @@ class LeaderboardsListController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tableView.rowHeight = 92
         self.tableView.tableFooterView = UIView() // Only show bottom separators between cells
         
         activityIndicator()
         
         self.tableView.refreshControl = refreshController
         // Configure Refresh Control
-        refreshController.addTarget(self, action: #selector(refreshScorecards), for: .valueChanged)
-        refreshController.attributedTitle = NSAttributedString(string: "Loading games ...")
-        
-        // Use the edit button item provided by the table view controller.
-        navigationItem.leftBarButtonItem = editButtonItem
+        refreshController.addTarget(self, action: #selector(refreshListings), for: .valueChanged)
+        refreshController.attributedTitle = NSAttributedString(string: "Loading stats ...")
 
-        // Load the sample data.
-        loadScorecards()
+        self.loadListings()
     }
 
     // MARK: - Table view data source
@@ -48,29 +45,21 @@ class LeaderboardsListController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Table view cells are reused and should be dequeued using a cell identifier.
-        let cellIdentifier = "ScorecardTableViewCell"
+        let cellIdentifier = "LeaderboardTableViewCell"
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ScorecardTableViewCell  else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? LeaderboardTableViewCell  else {
             fatalError("The dequeued cell is not an instance of \(cellIdentifier).")
         }
         
         // Fetches the appropriate scorecard for the data source layout.
-        let scorecard = listings[indexPath.row]
-        cell.dateLabel.text = scorecard.DateString
-        cell.peopleLabel.text = scorecard.People
-        cell.locationLabel.text = scorecard.Course.Name
-        cell.durationLabel.text = scorecard.DurationString
+        let listing = listings[indexPath.row]
+        let winner = listing.Entries[0].Name
         
-        cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
-        if scorecard.Winner == "t" {
-            // Tie
-            cell.rowImage.tintColor = UIColor(red: 201.0/255.0, green: 117.0/255.0, blue: 0.0/255.0, alpha: 1)
-        } else if scorecard.Winner == "i" {
-            // Incomplete
-            cell.rowImage.tintColor = UIColor(red: 201.0/255.0, green: 201.0/255.0, blue: 0.0/255.0, alpha: 1)
-        } else {
-            cell.rowImage.tintColor = UIColor(red: 41.0/255.0, green: 141.0/255.0, blue: 36.0/255.0, alpha: 1)
-        }
+        cell.titleLabel.text = listing.Title
+        cell.personLabel.text = listing.Entries[0].Name
+        cell.valueLabel.text = listing.Entries[0].Value
+        cell.Entries = listing.Entries
+        cell.rowImage.image = UIImage(systemName: winner.lowercased().prefix(1) + ".circle.fill")
 
         return cell
     }
@@ -79,24 +68,22 @@ class LeaderboardsListController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         switch(segue.identifier ?? "") {
-            case "NewGame":
-            os_log("Adding a new game.", log: OSLog.default, type: .debug)
-
             case "ShowDetail":
-            guard let scorecardDetailViewController = segue.destination as? ScorecardController else {
+            guard let detailController = segue.destination as? LeaderboardDetailController else {
                 fatalError("Unexpected destination: \(segue.destination)")
             }
 
-            guard let selectedScorecardCell = sender as? ScorecardTableViewCell else {
+            guard let selectedCell = sender as? LeaderboardTableViewCell else {
                 fatalError("Unexpected sender: \(String(describing: sender))")
             }
 
-            guard let indexPath = tableView.indexPath(for: selectedScorecardCell) else {
+            guard let indexPath = tableView.indexPath(for: selectedCell) else {
                 fatalError("The selected cell is not being displayed by the table")
             }
 
-            let selectedScorecard = scorecards[indexPath.row]
-            scorecardDetailViewController.scorecardListing = selectedScorecard
+            let selectedListing = listings[indexPath.row]
+            detailController.Title = selectedListing.Title
+            detailController.Entries = selectedListing.Entries
 
             default:
                 fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
@@ -120,16 +107,16 @@ class LeaderboardsListController: UITableViewController {
         indicator.hidesWhenStopped = true
     }
     
-    @objc private func refreshScorecards(_ sender: Any) {
-        loadScorecards()
+    @objc private func refreshListings(_ sender: Any) {
+        loadListings()
     }
     
-    private func loadScorecards() {
+    private func loadListings() {
         showActivityIndicator()
         sendGameRequest(url: "https://jlemon.org/golf/leaderboard", id: -1) { (result) -> () in
             let decoder = JSONDecoder()
             do {
-                self.scorecards = try decoder.decode([ScorecardListing].self, from: result!)
+                self.listings = try decoder.decode([LeaderboardListing].self, from: result!)
 
                 // Can't reload data from non-main thread
                 DispatchQueue.main.async {
