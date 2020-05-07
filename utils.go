@@ -43,6 +43,15 @@ func printPostForm(r *http.Request) {
 	}
 }
 
+func findGame(games []Game, id int) (Game, error) {
+	for _, g := range games {
+		if g.ID == id {
+			return g, nil
+		}
+	}
+	return Game{}, fmt.Errorf("Could not find game %d", id)
+}
+
 func getScoreMap(holes int, scores []GameScore) map[int]map[int]int {
 	scoreMap := make(map[int]map[int]int)
 
