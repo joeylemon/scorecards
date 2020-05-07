@@ -459,15 +459,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LeaderboardListingTableViewCell" rowHeight="60" id="Ech-vy-OIZ" userLabel="LeaderboardTableViewCell" customClass="LeaderboardListingTableViewCell" customModule="Scorecards" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="LeaderboardListingTableViewCell" rowHeight="60" id="Ech-vy-OIZ" userLabel="LeaderboardTableViewCell" customClass="LeaderboardListingTableViewCell" customModule="Scorecards" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ech-vy-OIZ" id="Aa0-Kw-U4l">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="383" height="60"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="32" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVx-N4-XhF">
-                                            <rect key="frame" x="362.5" y="10" width="41.5" height="42"/>
+                                            <rect key="frame" x="331.5" y="10" width="41.5" height="42"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="35"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -494,6 +494,7 @@
                                     <outlet property="personLabel" destination="Iaj-8o-Idt" id="Z6h-ih-G8Z"/>
                                     <outlet property="rowImage" destination="TUC-tc-BXg" id="X0u-Nu-N5b"/>
                                     <outlet property="valueLabel" destination="eVx-N4-XhF" id="7w2-rA-oTE"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="ShowDetail" id="BRt-oA-pdd"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -527,5 +528,8 @@
         <image name="timer" catalog="system" width="64" height="60"/>
         <image name="w.circle.fill" catalog="system" width="64" height="60"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="BRt-oA-pdd"/>
+    </inferredMetricsTieBreakers>
     <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
 </document>

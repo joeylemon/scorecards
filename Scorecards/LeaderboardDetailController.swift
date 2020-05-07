@@ -52,4 +52,29 @@ class LeaderboardDetailController: UITableViewController {
         return cell
     }
     
+    // MARK: Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        switch(segue.identifier ?? "") {
+            case "ShowDetail":
+            guard let listController = segue.destination as? ListViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+
+            guard let selectedCell = sender as? LeaderboardListingTableViewCell else {
+                fatalError("Unexpected sender: \(String(describing: sender))")
+            }
+
+            guard let indexPath = tableView.indexPath(for: selectedCell) else {
+                fatalError("The selected cell is not being displayed by the table")
+            }
+
+            let entry = Entries[indexPath.row]
+            listController.filterGames = entry.GameList
+
+            default:
+                fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")
+        }
+    }
+    
 }

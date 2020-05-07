@@ -14,6 +14,8 @@ class ListViewController: UITableViewController {
     //MARK: Properties
     var scorecards = [ScorecardListing]()
     
+    var filterGames = [Int]()
+    
     let refreshController = UIRefreshControl()
     var indicator = UIActivityIndicatorView()
     
@@ -31,9 +33,19 @@ class ListViewController: UITableViewController {
         refreshController.attributedTitle = NSAttributedString(string: "Loading games ...")
         
         // Use the edit button item provided by the table view controller.
-        navigationItem.leftBarButtonItem = editButtonItem
+        if filterGames.count == 0 {
+            navigationItem.leftBarButtonItem = editButtonItem
+        }
 
         self.loadScorecards()
+    }
+    
+    func getScorecards() -> [ScorecardListing] {
+        if filterGames.count == 0 {
+            return scorecards
+        }
+        
+        return scorecards.filter{ filterGames.contains($0.ID) }
     }
 
     // MARK: - Table view data source
@@ -43,7 +55,7 @@ class ListViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return scorecards.count
+        return getScorecards().count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -55,7 +67,7 @@ class ListViewController: UITableViewController {
         }
         
         // Fetches the appropriate scorecard for the data source layout.
-        let scorecard = scorecards[indexPath.row]
+        let scorecard = getScorecards()[indexPath.row]
         cell.dateLabel.text = scorecard.DateString
         cell.peopleLabel.text = scorecard.People
         cell.locationLabel.text = scorecard.Course.Name
@@ -84,10 +96,11 @@ class ListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            let scorecard = scorecards[indexPath.row]
+            let scorecard = getScorecards()[indexPath.row]
+            let index = getScorecards().firstIndex { $0.ID == scorecard.ID }!
             sendDeleteGameRequest(id: scorecard.ID)
-            scorecards.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            scorecards.remove(at: index)
+            tableView.reloadData()
         }
     }
 
@@ -111,7 +124,7 @@ class ListViewController: UITableViewController {
                 fatalError("The selected cell is not being displayed by the table")
             }
 
-            let selectedScorecard = scorecards[indexPath.row]
+            let selectedScorecard = getScorecards()[indexPath.row]
             scorecardDetailViewController.scorecardListing = selectedScorecard
 
             default:
