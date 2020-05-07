@@ -15,6 +15,7 @@ class ListViewController: UITableViewController {
     var scorecards = [ScorecardListing]()
     
     var filterGames = [Int]()
+    var filterTitle = String()
     
     let refreshController = UIRefreshControl()
     var indicator = UIActivityIndicatorView()
@@ -35,6 +36,9 @@ class ListViewController: UITableViewController {
         // Use the edit button item provided by the table view controller.
         if filterGames.count == 0 {
             navigationItem.leftBarButtonItem = editButtonItem
+        } else {
+            navigationItem.title = filterTitle
+            navigationItem.rightBarButtonItem = nil
         }
 
         self.loadScorecards()
@@ -89,6 +93,12 @@ class ListViewController: UITableViewController {
 
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let scorecard = scorecards[indexPath.row]
+        
+        if scorecard.isExpired() { return false }
+        
+        if filterGames.count != 0 { return false }
+        
         return true
     }
 
@@ -96,11 +106,10 @@ class ListViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            let scorecard = getScorecards()[indexPath.row]
-            let index = getScorecards().firstIndex { $0.ID == scorecard.ID }!
+            let scorecard = scorecards[indexPath.row]
             sendDeleteGameRequest(id: scorecard.ID)
-            scorecards.remove(at: index)
-            tableView.reloadData()
+            scorecards.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
 

@@ -71,6 +71,7 @@ class LeaderboardDetailController: UITableViewController {
 
             let entry = Entries[indexPath.row]
             listController.filterGames = entry.GameList
+            listController.filterTitle = entry.Name + " " + Title
 
             default:
                 fatalError("Unexpected Segue Identifier; \(String(describing: segue.identifier))")

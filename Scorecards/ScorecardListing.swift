@@ -34,5 +34,16 @@ class ScorecardListing: Codable {
         self.HoleCount = HoleCount
         self.Winner = Winner
     }
+    
+    func isExpired() -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d yyyy"
+        if let date = dateFormatter.date(from: self.DateString) {
+            let today = Date()
+            return today.timeIntervalSince(date) > 86400
+        }
+        
+        return false
+    }
 
 }

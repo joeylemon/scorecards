@@ -63,15 +63,24 @@ class Scorecard: Codable {
         })
     }
     
-    func isComplete() -> Bool {
-        var complete = true
-        
-        // Check if any of the scores in the first column are 0
-        for hole in 0..<self.Holes {
-            if self.Scores[hole][0].Score == 0 { complete = false }
+    func isExpired() -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d yyyy"
+        if let date = dateFormatter.date(from: self.DateString) {
+            let today = Date()
+            return today.timeIntervalSince(date) > 86400
         }
         
-        return complete
+        return false
+    }
+    
+    func isComplete() -> Bool {
+        // Check if any of the scores in the first column are 0
+        for hole in 0..<self.Holes {
+            if self.Scores[hole][0].Score == 0 { return false }
+        }
+        
+        return true
     }
     
     func getParForHole(hole: Int) -> Int {

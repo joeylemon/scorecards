@@ -160,6 +160,11 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
             indexPath.section <= 1 ||
             indexPath.section == getTotalRows() - 1 { return }
         
+        // Don't allow editing score of old scorecards
+        if let expired = scorecard?.isExpired() {
+            if expired { return }
+        }
+        
         scorecard?.incrementScore(hole: indexPath.section-2, playerIndex: indexPath.item-1)
         collectionView.reloadData()
     }
