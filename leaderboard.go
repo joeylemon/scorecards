@@ -10,9 +10,13 @@ import (
 var queries []LeaderboardQuery = []LeaderboardQuery{
 	{
 		Title: "Most Wins",
-		Query: `select p.name, count(s1.player_id) as value, GROUP_CONCAT(s1.game_id SEPARATOR ', ') as games from total_scores s1
+		Query: `select p.name, count(s1.player_id) as value, 
+					GROUP_CONCAT(s1.game_id SEPARATOR ', ') as games from total_scores s1
 					join (
-						select game_id, min(total_score) as winner_score from total_scores group by game_id
+						select game_id, min(total_score) as winner_score from total_scores 
+						left join games g on g.id=game_id
+						where TIMESTAMPDIFF(HOUR, g.date, g.end_time) != 8
+						group by game_id
 					) s2
 					on s1.total_score=s2.winner_score and s1.game_id=s2.game_id
 					left join players p on p.id=s1.player_id
@@ -24,7 +28,10 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 		Query: `select p.name, round(count(s1.player_id)/(select count(player_id) from game_players 
 					where player_id=s1.player_id), 2) as value, GROUP_CONCAT(s1.game_id SEPARATOR ', ') as games from total_scores s1
 					join (
-						select game_id, min(total_score) as winner_score from total_scores group by game_id
+						select game_id, min(total_score) as winner_score from total_scores 
+						left join games g on g.id=game_id
+						where TIMESTAMPDIFF(HOUR, g.date, g.end_time) != 8
+						group by game_id
 					) s2
 					on s1.total_score=s2.winner_score and s1.game_id=s2.game_id
 					left join players p on p.id=s1.player_id
@@ -44,7 +51,10 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 		Query: `select p.name, s2.lowest_score as value, 
 					GROUP_CONCAT(s1.game_id SEPARATOR ', ') as games from total_scores s1
 					join (
-						select player_id, min(total_score) as lowest_score from total_scores group by player_id
+						select player_id, min(total_score) as lowest_score from total_scores 
+						left join games g on g.id=game_id
+						where TIMESTAMPDIFF(HOUR, g.date, g.end_time) != 8
+						group by player_id
 					) s2
 					on s1.total_score=s2.lowest_score and s1.player_id=s2.player_id
 					left join players p on p.id=s1.player_id
@@ -121,7 +131,7 @@ func ListStatistics(w http.ResponseWriter, r *http.Request) {
 			games := strings.Split(entry.Games, ", ")
 
 			if entry.Games == "" {
-				queries[i].Entries[j].GameList = []int{0}
+				queries[i].Entries[j].GameList = make([]int, 0)
 				continue
 			}
 

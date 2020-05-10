@@ -77,7 +77,7 @@ func calculateHandicap() ([]LeaderboardEntry, error) {
 		entries = append(entries, LeaderboardEntry{
 			Name:     player.Name,
 			Value:    fmt.Sprintf("%.1f", players[i].Index),
-			GameList: []int{0},
+			GameList: make([]int, 0),
 		})
 	}
 

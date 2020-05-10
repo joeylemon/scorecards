@@ -33,7 +33,7 @@ func ListEntries(w http.ResponseWriter, r *http.Request) {
 		on s1.total_score=s2.winner_score and s1.game_id=s2.game_id
 		left join players p2 on p2.id=s1.player_id
 		left join games g2 on g2.id=s1.game_id
-		where TIMESTAMPDIFF(MINUTE, g2.date, g2.end_time) != 8*60
+		where TIMESTAMPDIFF(HOUR, g2.date, g2.end_time) != 8
 		group by s1.game_id) w on w.game_id=g.id
 
 		left join courses c on c.id=g.course_id
@@ -58,17 +58,17 @@ func ListEntries(w http.ResponseWriter, r *http.Request) {
 			durationTime := time.Time{}.Add(game.EndTime.Sub(game.Date))
 			games[i].DurationString = fmt.Sprintf("%dh %dm", durationTime.Hour(), durationTime.Minute())
 
-			// Set winner character to either tie or the winner's name
+			// Set winner to either tie or the winner's name
 			winners := strings.Split(game.Winners, ", ")
 			if len(winners) >= 2 {
-				games[i].Winner = "t"
+				games[i].Winner = "Tie"
 			} else {
-				games[i].Winner = strings.ToLower(game.Winners[0:1])
+				games[i].Winner = game.Winners
 			}
 		} else {
 			// If there are no winners, the game is still occurring
 			games[i].DurationString = "In progress"
-			games[i].Winner = "i"
+			games[i].Winner = "Incomplete"
 		}
 	}
 
@@ -86,6 +86,8 @@ func CreateGame(w http.ResponseWriter, r *http.Request) {
 	}
 	printPostForm(r)
 
+	// Application will send request regardless of if no players were selected
+	// Prevent creation of empty game
 	if len(r.Form.Get("players")) == 0 {
 		return
 	}
@@ -100,9 +102,9 @@ func CreateGame(w http.ResponseWriter, r *http.Request) {
 		lon = 0.0
 	}
 
-	players := strings.Split(r.Form.Get("players"), ",")
-	holes, _ := strconv.Atoi(r.Form.Get("holes"))
-	front := r.Form.Get("front") == "true"
+	players := strings.Split(r.Form.Get("players"), ",") // String-separated list of names
+	holes, _ := strconv.Atoi(r.Form.Get("holes"))        // 9 or 18
+	front := r.Form.Get("front") == "true"               // Front or back
 
 	// Front will always be true if playing 18 holes
 	if holes == 18 {
@@ -259,7 +261,7 @@ func SetScore(w http.ResponseWriter, r *http.Request) {
 
 	// Make sure game isn't over a day old
 	if time.Now().UTC().Sub(game.EndTime).Hours() > 1 {
-		log.Print("SetScoreNew error: cannot change game score after 1 hour of ending")
+		handleError(fmt.Errorf("cannot change game score after 1 hour of ending"))
 		return
 	}
 
@@ -321,7 +323,7 @@ func DeleteGame(w http.ResponseWriter, r *http.Request) {
 	// Make sure game isn't too old
 	log.Printf("Time since ending: %f", time.Now().UTC().Sub(game.EndTime).Hours())
 	if time.Now().UTC().Sub(game.EndTime).Hours() > 1 {
-		log.Print("DeleteGame error: cannot delete game after 1 hours of ending")
+		handleError(fmt.Errorf("cannot delete game after 1 hours of ending"))
 		return
 	}
 
