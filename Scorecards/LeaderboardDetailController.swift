@@ -48,6 +48,11 @@ class LeaderboardDetailController: UITableViewController {
         cell.personLabel.text = entry.Name
         cell.valueLabel.text = entry.Value
         cell.rowImage.image = UIImage(systemName: entry.Name.lowercased().prefix(1) + ".circle.fill")
+        
+        if entry.GameList.count == 0 {
+            cell.accessoryType = .none
+            cell.isUserInteractionEnabled = false
+        }
 
         return cell
     }

@@ -84,7 +84,7 @@ class Scorecard: Codable {
     }
     
     func getParForHole(hole: Int) -> Int {
-        return self.Pars[hole]
+        return self.Pars[hole-1]
     }
     
     func getParForGame() -> Int {

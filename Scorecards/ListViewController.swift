@@ -77,15 +77,18 @@ class ListViewController: UITableViewController {
         cell.locationLabel.text = scorecard.Course.Name
         cell.durationLabel.text = scorecard.DurationString
         
-        cell.rowImage.image = UIImage(systemName: scorecard.Winner + ".circle.fill")
-        if scorecard.Winner == "t" {
-            // Tie
-            cell.rowImage.tintColor = UIColor(red: 201.0/255.0, green: 117.0/255.0, blue: 0.0/255.0, alpha: 1)
-        } else if scorecard.Winner == "i" {
-            // Incomplete
-            cell.rowImage.tintColor = UIColor(red: 201.0/255.0, green: 201.0/255.0, blue: 0.0/255.0, alpha: 1)
-        } else {
-            cell.rowImage.tintColor = UIColor(red: 41.0/255.0, green: 141.0/255.0, blue: 36.0/255.0, alpha: 1)
+        cell.rowImage.image = UIImage(systemName: scorecard.Winner.lowercased().prefix(1) + ".circle.fill")
+        
+        switch(scorecard.Winner) {
+        case "Tie":
+            cell.rowImage.tintColor = UIColor(red: 201.0/255.0, green: 117.0/255.0,
+                                              blue: 0.0/255.0, alpha: 1)
+        case "Incomplete":
+            cell.rowImage.tintColor = UIColor(red: 201.0/255.0, green: 201.0/255.0,
+                                              blue: 0.0/255.0, alpha: 1)
+        default:
+            cell.rowImage.tintColor = UIColor(red: 41.0/255.0, green: 141.0/255.0,
+                                              blue: 36.0/255.0, alpha: 1)
         }
 
         return cell
@@ -93,13 +96,7 @@ class ListViewController: UITableViewController {
 
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        let scorecard = scorecards[indexPath.row]
-        
-        if scorecard.isExpired() { return false }
-        
-        if filterGames.count != 0 { return false }
-        
-        return true
+        return !scorecards[indexPath.row].isExpired() && filterGames.count == 0
     }
 
     // Override to support editing the table view.

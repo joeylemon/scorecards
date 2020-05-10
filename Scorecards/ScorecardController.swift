@@ -11,8 +11,9 @@ import UIKit
 class ScorecardController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let reuseIdentifier = "cell"
-    private let greenColor = UIColor(red: 41.0/255.0, green: 141.0/255.0, blue: 36.0/255.0, alpha: 1)
     private let goldColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 0.0/255.0, alpha: 1)
+    private let parColor = UIColor(red: 50.0/255.0, green: 168.0/255.0, blue: 54.0/255.0, alpha: 0.2)
+    private let birdieColor = UIColor(red: 230.0/255.0, green: 216.0/255.0, blue: 62.0/255.0, alpha: 0.2)
     
     let refreshController = UIRefreshControl()
     var indicator = UIActivityIndicatorView()
@@ -101,7 +102,7 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 
                 var hole = indexPath.section-1
                 if !scorecard!.Front {
-                    hole = 9 + hole
+                    hole += 9
                 }
                 
                 cell.label.text = String(hole)
@@ -110,8 +111,24 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 cell.layer.borderColor = UIColor.secondaryLabel.withAlphaComponent(0.25).cgColor
                 cell.layer.borderWidth = 1
                 
-                let score = scorecard!.Scores[indexPath.section-2][playerIndex]
+                var hole = indexPath.section-1
+                
+                let score = scorecard!.Scores[hole-1][playerIndex]
                 if score.Score == 0 { return cell }
+                
+                // Adjust hole for back nine
+                if !scorecard!.Front { hole += 9 }
+                
+                // Highlight pars
+                if score.Score == scorecard!.getParForHole(hole: hole) {
+                    cell.layer.backgroundColor = parColor.cgColor
+                    cell.layer.borderColor = parColor.cgColor
+                    
+                // Highlight birdies and better
+                } else if score.Score <= scorecard!.getParForHole(hole: hole) - 1 {
+                    cell.layer.backgroundColor = birdieColor.cgColor
+                    cell.layer.borderColor = birdieColor.cgColor
+                }
                 
                 cell.label.font = cell.label.font.withSize(30)
                 cell.label.textColor = UIColor.label
@@ -125,7 +142,7 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 if !scorecard!.Front {
                     hole = 9 + hole
                 }
-                let par = scorecard!.getParForHole(hole: hole - 1)
+                let par = scorecard!.getParForHole(hole: hole)
                 
                 cell.label.font = cell.label.font.withSize(30)
                 cell.label.textColor = UIColor.secondaryLabel
@@ -161,9 +178,7 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
             indexPath.section == getTotalRows() - 1 { return }
         
         // Don't allow editing score of old scorecards
-        if let expired = scorecard?.isExpired() {
-            if expired { return }
-        }
+        if scorecard!.isExpired() { return }
         
         scorecard?.incrementScore(hole: indexPath.section-2, playerIndex: indexPath.item-1)
         collectionView.reloadData()
@@ -202,17 +217,6 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
     func getTotalColumns() -> Int {
         return 2 + (scorecard?.Players.count ?? 0)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     @objc private func refreshScores(_ sender: Any) {
         loadScores()
