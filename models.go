@@ -26,6 +26,26 @@ func (g Game) isLastHole(hole int) bool {
 	return hole == g.HoleCount
 }
 
+type GameListing struct {
+	ID             int `gorm:"unique;not null;primary_key"`
+	HoleCount      int
+	Front          bool
+	Date           time.Time `json:"-"`
+	EndTime        time.Time `json:"-"`
+	DateString     string    `gorm:"-"`
+	DurationString string    `gorm:"-"`
+	CourseID       int
+	Course         Course
+	People         string
+	Players        []string `gorm:"-"`
+	Winners        string   `json:"-"`
+	Winner         string
+}
+
+func (GameListing) TableName() string {
+	return "games"
+}
+
 // Course describes a golf course
 type Course struct {
 	ID        int `gorm:"unique;not null;primary_key"`
@@ -83,6 +103,30 @@ func (GameScore) TableName() string {
 	return "game_scores"
 }
 
+type Handicap struct {
+	GameID     int
+	PlayerID   int
+	TotalScore int
+	Rating     float64
+	Slope      float64
+}
+
+func (Handicap) TableName() string {
+	return "total_scores"
+}
+
+type HandicapPlayer struct {
+	ID            int `gorm:"unique;not null;primary_key"`
+	Name          string
+	LatestScores  []int     `gorm:"-"`
+	Differentials []float64 `gorm:"-"`
+	Index         float64   `gorm:"-"`
+}
+
+func (HandicapPlayer) TableName() string {
+	return "players"
+}
+
 type LeaderboardQuery struct {
 	Title   string
 	Query   string `json:"-"`
@@ -90,8 +134,8 @@ type LeaderboardQuery struct {
 }
 
 type LeaderboardEntry struct {
-	Name  		string
-	Value 		string
-	Games 		string	`json:"-"`
-	GameList 	[]int 	`gorm:"-"`
+	Name     string
+	Value    string
+	Games    string `json:"-"`
+	GameList []int  `gorm:"-"`
 }

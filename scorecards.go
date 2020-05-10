@@ -11,94 +11,77 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// ListEntries lists all games and their information
 func ListEntries(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
-	var games []Game
-	if err := db.Preload("Course").Order("id desc").Find(&games).Error; err != nil {
-		log.Printf("ListEntries error: %v", err)
-		return
-	}
+	var games []GameListing
+	if err := db.Preload("Course").Raw(`
+		select g.id, g.hole_count, g.front, g.date, g.end_time, 
+		c.id as course_id,
+		group_concat(p.name separator ', ') as people,
+		w.winners
+		from games g
 
-	var gamePlayers []GamePlayer
-	if err := db.Preload("Player").Find(&gamePlayers).Error; err != nil {
-		log.Printf("ListEntries error: %v", err)
-		return
-	}
+		left join 
+		(select s2.game_id, group_concat(p2.name separator ', ') as winners
+		from total_scores s1
+		join (
+			select game_id, min(total_score) as winner_score from total_scores
+			group by game_id
+		) s2
+		on s1.total_score=s2.winner_score and s1.game_id=s2.game_id
+		left join players p2 on p2.id=s1.player_id
+		left join games g2 on g2.id=s1.game_id
+		where TIMESTAMPDIFF(MINUTE, g2.date, g2.end_time) != 8*60
+		group by s1.game_id) w on w.game_id=g.id
 
-	scoreSums := make(map[int]int)
-	var gameScores []GameScore
-	if err := db.Find(&gameScores).Error; err != nil {
-		log.Printf("ListEntries error: %v", err)
+		left join courses c on c.id=g.course_id
+		left join game_players gp on gp.game_id=g.id
+		left join players p on gp.player_id=p.id
+		group by g.id
+		order by g.date desc
+	`).Find(&games).Error; err != nil {
+		handleError(err)
 		return
 	}
 
 	for i, game := range games {
+		// Format date into string
 		games[i].DateString = game.Date.Format("Jan 2 2006")
 
-		durationTime := time.Time{}.Add(game.EndTime.Sub(game.Date))
-		games[i].DurationString = fmt.Sprintf("%dh %dm", durationTime.Hour(), durationTime.Minute())
+		// Create string array of player names
+		games[i].Players = strings.Split(game.People, ", ")
 
-		// Sum the player's scores
-		totalIncompletePlayers := 0
-		for _, score := range gameScores {
-			if score.GameID == game.ID {
-				scoreSums[score.PlayerID] += score.Score
-				if game.isLastHole(score.HoleNum) && score.Score == 0 {
-					totalIncompletePlayers++
-				}
+		if len(game.Winners) > 0 {
+			// Determine duration of the game
+			durationTime := time.Time{}.Add(game.EndTime.Sub(game.Date))
+			games[i].DurationString = fmt.Sprintf("%dh %dm", durationTime.Hour(), durationTime.Minute())
+
+			// Set winner character to either tie or the winner's name
+			winners := strings.Split(game.Winners, ", ")
+			if len(winners) >= 2 {
+				games[i].Winner = "t"
+			} else {
+				games[i].Winner = strings.ToLower(game.Winners[0:1])
 			}
-		}
-
-		// Find the lowest score
-		lowestScore := 200
-		for _, score := range gameScores {
-			sum := scoreSums[score.PlayerID]
-			if score.GameID == game.ID && sum < lowestScore {
-				// Don't count if a player quits at 9 holes out of 18
-				if game.HoleCount == 18 && sum > 30 && sum < 65 {
-					continue
-				}
-				lowestScore = sum
-			}
-		}
-
-		// Add each player to single string, and set game's winner flag
-		winnerCount := 0
-		for _, player := range gamePlayers {
-			if player.GameID == game.ID {
-				games[i].Players = append(games[i].Players, player.Player.Name)
-				if scoreSums[player.PlayerID] == lowestScore {
-					games[i].Winner = strings.ToLower(string(player.Player.Name[0]))
-					winnerCount++
-				}
-			}
-		}
-
-		if winnerCount > 1 || winnerCount == 0 {
-			// More than one winner means there's a tie
-			games[i].Winner = "t"
-		}
-
-		if totalIncompletePlayers >= len(games[i].Players)/2+1 {
-			// If a majority of players didn't finish, game is incomplete
-			games[i].Winner = "i"
+		} else {
+			// If there are no winners, the game is still occurring
 			games[i].DurationString = "In progress"
+			games[i].Winner = "i"
 		}
-
-		games[i].People = strings.Join(games[i].Players, ", ")
-		scoreSums = make(map[int]int)
 	}
 
 	writeJSON(w, games)
 }
 
-func CreateGameNew(w http.ResponseWriter, r *http.Request) {
+// CreateGame creates a new game with the given players
+func CreateGame(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	err := r.ParseForm()
 	if err != nil {
-		log.Printf("CreateGame error: %v", err)
+		handleError(err)
 		return
 	}
 	printPostForm(r)
@@ -134,7 +117,7 @@ func CreateGameNew(w http.ResponseWriter, r *http.Request) {
 	game.Date = time.Now().UTC()
 	game.EndTime = time.Now().Add(time.Hour * 8).UTC()
 	if err = db.Create(&game).Error; err != nil {
-		log.Printf("CreateGame error: %v", err)
+		handleError(err)
 	}
 
 	// Associate players with the game
@@ -143,7 +126,7 @@ func CreateGameNew(w http.ResponseWriter, r *http.Request) {
 		gamePlayer.GameID = game.ID
 		gamePlayer.PlayerID, _ = strconv.Atoi(playerID)
 		if err = db.Create(&gamePlayer).Error; err != nil {
-			log.Printf("CreateGame error: %v", err)
+			handleError(err)
 		}
 
 		// Create empty scores
@@ -154,18 +137,19 @@ func CreateGameNew(w http.ResponseWriter, r *http.Request) {
 			gameScore.HoleNum = i
 			gameScore.Score = 0
 			if err = db.Create(&gameScore).Error; err != nil {
-				log.Printf("CreateGame error: %v", err)
+				handleError(err)
 			}
 		}
 	}
 }
 
-func GetGameNew(w http.ResponseWriter, r *http.Request) {
+// GetGame returns the scorecard for a given game
+func GetGame(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	err := r.ParseForm()
 	if err != nil {
-		log.Printf("GetGame error: %v", err)
+		handleError(err)
 		return
 	}
 	printPostForm(r)
@@ -174,14 +158,14 @@ func GetGameNew(w http.ResponseWriter, r *http.Request) {
 
 	var game Game
 	if err := db.Where("id = ?", id).Find(&game).Error; err != nil {
-		log.Printf("GetGame error: %v", err)
+		handleError(err)
 	}
 
 	// Get a list of hole pars
 	var pars []int
 	var coursePars []CoursePar
 	if err := db.Where("course_id = ?", game.CourseID).Order("hole_num asc").Find(&coursePars).Error; err != nil {
-		log.Printf("GetGame error: %v", err)
+		handleError(err)
 	}
 
 	if len(coursePars) > 0 {
@@ -196,7 +180,7 @@ func GetGameNew(w http.ResponseWriter, r *http.Request) {
 
 	var players []Player
 	if err = db.Raw("SELECT p.* FROM game_players gp INNER JOIN players p ON p.id=gp.player_id WHERE gp.game_id = ?", id).Find(&players).Error; err != nil {
-		log.Printf("GetGame error: %v", err)
+		handleError(err)
 	}
 
 	var people []string
@@ -208,7 +192,7 @@ func GetGameNew(w http.ResponseWriter, r *http.Request) {
 	scoreSums := make(map[int]int)
 	var scores []GameScore
 	if err = db.Where("game_id = ?", id).Find(&scores).Error; err != nil {
-		log.Printf("GetGame error: %v", err)
+		handleError(err)
 	}
 
 	// Sum the player's scores
@@ -254,12 +238,13 @@ func GetGameNew(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, h)
 }
 
-func SetScoreNew(w http.ResponseWriter, r *http.Request) {
+// SetScore sets the scorecard for a given game
+func SetScore(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	err := r.ParseForm()
 	if err != nil {
-		log.Printf("SetScore error: %v", err)
+		handleError(err)
 		return
 	}
 	printPostForm(r)
@@ -269,7 +254,7 @@ func SetScoreNew(w http.ResponseWriter, r *http.Request) {
 	// Get game from db
 	var game Game
 	if err := db.Where("id = ?", gameID).Find(&game).Error; err != nil {
-		log.Printf("SetScoreNew error: %v", err)
+		handleError(err)
 	}
 
 	// Make sure game isn't over a day old
@@ -298,28 +283,29 @@ func SetScoreNew(w http.ResponseWriter, r *http.Request) {
 
 	if completedGame {
 		if err := db.Model(Game{}).Where("id = ?", gameID).Update("end_time", time.Now().UTC()).Error; err != nil {
-			log.Printf("SetScoreNew error: %v", err)
+			handleError(err)
 		}
 	}
 
 	if err := db.Delete(GameScore{}, "game_id = ?", gameID).Error; err != nil {
-		log.Printf("SetScoreNew error: %v", err)
+		handleError(err)
 	}
 
 	query := "INSERT INTO game_scores(game_id, player_id, hole_num, score) VALUES "
 	query += strings.Join(values, ",")
 
 	if err := db.Exec(query).Error; err != nil {
-		log.Printf("SetScoreNew error: %v", err)
+		handleError(err)
 	}
 }
 
+// DeleteGame deletes a given game
 func DeleteGame(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	err := r.ParseForm()
 	if err != nil {
-		log.Printf("DeleteGame error: %v", err)
+		handleError(err)
 		return
 	}
 	printPostForm(r)
@@ -329,7 +315,7 @@ func DeleteGame(w http.ResponseWriter, r *http.Request) {
 	// Get game from db
 	var game Game
 	if err := db.Where("id = ?", gameID).Find(&game).Error; err != nil {
-		log.Printf("DeleteGame error: %v", err)
+		handleError(err)
 	}
 
 	// Make sure game isn't too old
@@ -341,16 +327,16 @@ func DeleteGame(w http.ResponseWriter, r *http.Request) {
 
 	// Delete game
 	if err = db.Where("id = ?", gameID).Delete(Game{}).Error; err != nil {
-		log.Printf("DeleteGame error: %v", err)
+		handleError(err)
 	}
 
 	// Delete all scores attached to game
 	if err = db.Where("game_id = ?", gameID).Delete(GameScore{}).Error; err != nil {
-		log.Printf("DeleteGame error: %v", err)
+		handleError(err)
 	}
 
 	// Delete all players attached to game
 	if err = db.Where("game_id = ?", gameID).Delete(GamePlayer{}).Error; err != nil {
-		log.Printf("DeleteGame error: %v", err)
+		handleError(err)
 	}
 }

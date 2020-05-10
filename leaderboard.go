@@ -1,9 +1,10 @@
 package main
 
 import (
+	"log"
 	"net/http"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 var queries []LeaderboardQuery = []LeaderboardQuery{
@@ -51,6 +52,18 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 					order by value asc`,
 	},
 	{
+		Title: "Lowest Handicap",
+		Query: `select p.name, truncate((((AVG(s.total_score)*2 - c.rating)*113)/c.slope)*0.96, 1) 
+					as value, '' as games
+					from total_scores s
+					left join players p on p.id=s.player_id
+					left join games g on g.id=s.game_id
+					left join courses c on c.id=g.course_id
+					where g.hole_count=9
+					group by s.player_id
+					order by value`,
+	},
+	{
 		Title: "Highest Par Rate",
 		Query: `select p.name,round(count(gs.player_id)/
 					(select count(player_id) from game_scores where player_id=gs.player_id), 2)
@@ -90,11 +103,27 @@ func ListStatistics(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	for i, query := range queries {
+		if strings.Contains(query.Title, "Handicap") {
+			var err error
+			queries[i].Entries, err = calculateHandicap()
+			if err != nil {
+				log.Print(err)
+			}
+			log.Print(queries[i].Entries)
+
+			continue
+		}
+
 		db.Raw(query.Query).Scan(&queries[i].Entries)
 
 		// Scan game string into list of ids
 		for j, entry := range queries[i].Entries {
 			games := strings.Split(entry.Games, ", ")
+
+			if entry.Games == "" {
+				queries[i].Entries[j].GameList = []int{0}
+				continue
+			}
 
 			for _, game := range games {
 				num, err := strconv.Atoi(game)

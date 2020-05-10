@@ -13,9 +13,9 @@ var db *gorm.DB
 func initRoutes() {
 	// Scorecards
 	http.HandleFunc("/listentries", ListEntries)
-	http.HandleFunc("/createnew", CreateGameNew)
-	http.HandleFunc("/getgamenew", GetGameNew)
-	http.HandleFunc("/setscorenew", SetScoreNew)
+	http.HandleFunc("/createnew", CreateGame)
+	http.HandleFunc("/getgamenew", GetGame)
+	http.HandleFunc("/setscorenew", SetScore)
 	http.HandleFunc("/deletegame", DeleteGame)
 
 	// Leaderboards

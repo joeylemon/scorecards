@@ -5,8 +5,20 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"runtime"
 	"strings"
 )
+
+// handleError prints the error message and the function in which it arose
+func handleError(err error) {
+	pc, _, _, ok := runtime.Caller(1)
+	details := runtime.FuncForPC(pc)
+	if ok && details != nil {
+		log.Printf("%s() error: %v", details.Name(), err)
+	} else {
+		log.Print(err)
+	}
+}
 
 func writeJSON(w http.ResponseWriter, obj interface{}) {
 	json, err := json.MarshalIndent(obj, "", "    ")
