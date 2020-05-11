@@ -59,7 +59,11 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
         
         if !dataLoaded { return cell }
         
-        let playerIndex = indexPath.item-1
+        let row = indexPath.section
+        let column = indexPath.item
+        let playerIndex = column-1
+        let hole = row-1
+        let adjustedHole = scorecard!.Front ? hole : hole + 9
         
         // Reset all cell elements
         cell.label.text = ""
@@ -68,12 +72,12 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
         cell.layer.borderWidth = 0
         cell.layer.backgroundColor = nil
         
-        if indexPath.section == 1 {
+        if row == 1 {
             // Header row
             cell.label.font = cell.label.font.withSize(18)
             cell.label.textColor = UIColor.secondaryLabel
             
-            if indexPath.item > 0 && indexPath.item < getTotalColumns() - 1 {
+            if column > 0 && column < getTotalColumns() - 1 {
                 // Player names
                 cell.layer.backgroundColor = UIColor.tertiaryLabel.cgColor
                 
@@ -86,46 +90,35 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 if scorecard?.isComplete() ?? true && score == scorecard?.LowestScore {
                     cell.layer.backgroundColor = goldColor.withAlphaComponent(0.8).cgColor
                 }
-            } else if indexPath.item == getTotalColumns() - 1 {
+            } else if column == getTotalColumns() - 1 {
                 // Par column
                 cell.layer.backgroundColor = UIColor.quaternaryLabel.cgColor
                 cell.label.font = cell.label.font.withSize(35)
                 cell.label.textColor = UIColor.secondaryLabel
                 cell.label.text = "P"
             }
-        } else if indexPath.section > 1 && indexPath.section < getTotalRows() - 1 {
+        } else if row > 1 && row < getTotalRows() - 1 {
             // Score rows
-            if indexPath.item == 0 {
+            if column == 0 {
                 // Hole number
                 cell.label.font = cell.label.font.withSize(14)
                 cell.label.textColor = UIColor.tertiaryLabel
-                
-                var hole = indexPath.section-1
-                if !scorecard!.Front {
-                    hole += 9
-                }
-                
-                cell.label.text = String(hole)
-            } else if indexPath.item > 0 && indexPath.item < getTotalColumns() - 1 {
+                cell.label.text = String(adjustedHole)
+            } else if column > 0 && column < getTotalColumns() - 1 {
                 // Player score
                 cell.layer.borderColor = UIColor.secondaryLabel.withAlphaComponent(0.25).cgColor
                 cell.layer.borderWidth = 1
                 
-                var hole = indexPath.section-1
-                
                 let score = scorecard!.Scores[hole-1][playerIndex]
                 if score.Score == 0 { return cell }
                 
-                // Adjust hole for back nine
-                if !scorecard!.Front { hole += 9 }
-                
                 // Highlight pars
-                if score.Score == scorecard!.getParForHole(hole: hole) {
+                if score.Score == scorecard!.getParForHole(hole: adjustedHole) {
                     cell.layer.backgroundColor = parColor.cgColor
                     //cell.layer.borderColor = parColor.cgColor
                     
                 // Highlight birdies and better
-                } else if score.Score <= scorecard!.getParForHole(hole: hole) - 1 {
+                } else if score.Score <= scorecard!.getParForHole(hole: adjustedHole) - 1 {
                     cell.layer.backgroundColor = birdieColor.cgColor
                     //cell.layer.borderColor = birdieColor.cgColor
                 }
@@ -133,23 +126,17 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 cell.label.font = cell.label.font.withSize(30)
                 cell.label.textColor = UIColor.label
                 cell.label.text = String(score.Score)
-            } else if indexPath.item == getTotalColumns() - 1 {
+            } else if column == getTotalColumns() - 1 {
                 // Par count
                 cell.layer.borderColor = UIColor.secondaryLabel.withAlphaComponent(0.25).cgColor
                 cell.layer.borderWidth = 1
                 
-                var hole = indexPath.section-1
-                if !scorecard!.Front {
-                    hole = 9 + hole
-                }
-                let par = scorecard!.getParForHole(hole: hole)
-                
                 cell.label.font = cell.label.font.withSize(30)
                 cell.label.textColor = UIColor.secondaryLabel
-                cell.label.text = String(par)
+                cell.label.text = String(scorecard!.getParForHole(hole: adjustedHole))
             }
-        } else if indexPath.section == getTotalRows() - 1 {
-            if indexPath.item > 0 && indexPath.item < getTotalColumns() - 1 {
+        } else if row == getTotalRows() - 1 {
+            if column > 0 && column < getTotalColumns() - 1 {
                 // Total row
                 cell.layer.backgroundColor = UIColor.tertiaryLabel.cgColor
                 
@@ -157,8 +144,8 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 cell.label.font = cell.label.font.withSize(25)
                 cell.label.textColor = UIColor.label
                 cell.label.text = String(score)
-            } else if indexPath.item == getTotalColumns() - 1 {
-                // Par row
+            } else if column == getTotalColumns() - 1 {
+                // Par total row
                 cell.layer.backgroundColor = UIColor.quaternaryLabel.cgColor
                 
                 cell.label.font = cell.label.font.withSize(25)
@@ -171,11 +158,12 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let row = indexPath.section
+        let column = indexPath.item
+        
         // Only allow selecting score cells
-        if indexPath.item == 0 ||
-            indexPath.item == getTotalColumns() - 1 ||
-            indexPath.section <= 1 ||
-            indexPath.section == getTotalRows() - 1 { return }
+        if column == 0 || column == getTotalColumns() - 1 ||
+            row <= 1 || row == getTotalRows() - 1 { return }
         
         // Don't allow editing score of old scorecards
         if scorecard!.isExpired() { return }
@@ -185,24 +173,27 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let row = indexPath.section
+        let column = indexPath.item
+        
         var cellHeight = 63
         var cellWidth = (collectionView.bounds.size.width - 50 - 50) / CGFloat(getTotalColumns() - 2)
         
-        if indexPath.section == 0 {
+        if row == 0 {
             // Padding row
             cellHeight = 13
-        }else if indexPath.section == 1 {
+        } else if row == 1 {
             // Header row
             cellHeight = 55
-        } else if indexPath.section == getTotalRows() - 1 {
+        } else if row == getTotalRows() - 1 {
             // Last row
             cellHeight = 55
         }
         
-        if indexPath.item == 0 {
+        if column == 0 {
             // Hole numbers
             cellWidth = 40
-        } else if indexPath.item == getTotalColumns() - 1 {
+        } else if column == getTotalColumns() - 1 {
             // Par count
             cellWidth = 50
         }
@@ -211,10 +202,12 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     func getTotalRows() -> Int {
+        // 3 = Padding row, player names, total row
         return 3 + (scorecard?.Scores.count ?? 0)
     }
     
     func getTotalColumns() -> Int {
+        // 2 = Hole numbers, par counts
         return 2 + (scorecard?.Players.count ?? 0)
     }
     
