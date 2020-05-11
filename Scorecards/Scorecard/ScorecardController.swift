@@ -12,8 +12,8 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
     
     let reuseIdentifier = "cell"
     private let goldColor = UIColor(red: 255.0/255.0, green: 217.0/255.0, blue: 0.0/255.0, alpha: 1)
-    private let parColor = UIColor(red: 50.0/255.0, green: 168.0/255.0, blue: 54.0/255.0, alpha: 0.2)
-    private let birdieColor = UIColor(red: 230.0/255.0, green: 216.0/255.0, blue: 62.0/255.0, alpha: 0.2)
+    private let parColor = UIColor(red: 50.0/255.0, green: 168.0/255.0, blue: 54.0/255.0, alpha: 0.5)
+    private let birdieColor = UIColor(red: 230.0/255.0, green: 216.0/255.0, blue: 62.0/255.0, alpha: 0.5)
     
     let refreshController = UIRefreshControl()
     var indicator = UIActivityIndicatorView()
@@ -122,12 +122,12 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 // Highlight pars
                 if score.Score == scorecard!.getParForHole(hole: hole) {
                     cell.layer.backgroundColor = parColor.cgColor
-                    cell.layer.borderColor = parColor.cgColor
+                    //cell.layer.borderColor = parColor.cgColor
                     
                 // Highlight birdies and better
                 } else if score.Score <= scorecard!.getParForHole(hole: hole) - 1 {
                     cell.layer.backgroundColor = birdieColor.cgColor
-                    cell.layer.borderColor = birdieColor.cgColor
+                    //cell.layer.borderColor = birdieColor.cgColor
                 }
                 
                 cell.label.font = cell.label.font.withSize(30)
