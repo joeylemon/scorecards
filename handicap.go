@@ -6,7 +6,7 @@ import (
 	"sort"
 )
 
-func calculateHandicap() ([]LeaderboardEntry, error) {
+func calculateHandicaps() ([]HandicapPlayer, error) {
 	var players []HandicapPlayer
 	if err := db.Find(&players).Error; err != nil {
 		log.Print(err)
@@ -17,7 +17,7 @@ func calculateHandicap() ([]LeaderboardEntry, error) {
 	if err := db.Raw(`select * from total_scores s
 		left join games g on g.id=s.game_id
 		left join courses c on c.id=g.course_id
-		where g.hole_count=9
+		where g.hole_count=9 AND TIMESTAMPDIFF(HOUR, g.date, g.end_time) != 8
 		order by g.date desc`).Scan(&scores).Error; err != nil {
 		log.Print(err)
 		return nil, err
@@ -43,8 +43,6 @@ func calculateHandicap() ([]LeaderboardEntry, error) {
 		}
 	}
 
-	var entries []LeaderboardEntry
-
 	// Calculate differentials
 	for i, player := range players {
 		for _, score := range player.LatestScores {
@@ -66,6 +64,17 @@ func calculateHandicap() ([]LeaderboardEntry, error) {
 		// Truncate index
 		players[i].Index = float64(int(players[i].Index*10)) / 10
 	}
+
+	return players, nil
+}
+
+func getHandicapLeaderboard() ([]LeaderboardEntry, error) {
+	players, err := calculateHandicaps()
+	if err != nil {
+		return nil, err
+	}
+
+	var entries []LeaderboardEntry
 
 	// Sort the players by lowest handicap
 	sort.Slice(players, func(i, j int) bool {

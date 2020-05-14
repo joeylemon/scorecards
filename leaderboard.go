@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -107,19 +106,29 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 					group by gs.player_id
 					order by value desc`,
 	},
+	{
+		Title: "Average Game Length",
+		Query: `select c.name, 
+					time_format(sec_to_time(avg(time_to_sec(timediff(g.end_time, g.date)))), '%lh %im') as value,
+					group_concat(g.id separator ', ') as games
+					from games g
+					left join courses c on c.id=g.course_id
+					where g.hole_count=9
+					group by g.course_id`,
+	},
 }
 
+// ListStatistics lists the statistics to be ranked in the leaderboards
 func ListStatistics(w http.ResponseWriter, r *http.Request) {
 	enableCors(&w)
 
 	for i, query := range queries {
 		if strings.Contains(query.Title, "Handicap") {
 			var err error
-			queries[i].Entries, err = calculateHandicap()
+			queries[i].Entries, err = getHandicapLeaderboard()
 			if err != nil {
-				log.Print(err)
+				handleError(err)
 			}
-			log.Print(queries[i].Entries)
 
 			continue
 		}
