@@ -17,6 +17,7 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
     
     let refreshController = UIRefreshControl()
     var indicator = UIActivityIndicatorView()
+    let feedback = UIImpactFeedbackGenerator(style: .medium)
     
     var scorecardListing: ScorecardListing?
     var scorecard: Scorecard?
@@ -170,6 +171,8 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
         
         scorecard?.incrementScore(hole: indexPath.section-2, playerIndex: indexPath.item-1)
         collectionView.reloadData()
+        
+        feedback.impactOccurred()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
