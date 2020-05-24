@@ -322,23 +322,13 @@ func DeleteGame(w http.ResponseWriter, r *http.Request) {
 
 	// Make sure game isn't too old
 	log.Printf("Time since ending: %f", time.Now().UTC().Sub(game.EndTime).Hours())
-	if time.Now().UTC().Sub(game.EndTime).Hours() > 1 {
-		handleError(fmt.Errorf("cannot delete game after 1 hours of ending"))
+	if time.Now().UTC().Sub(game.EndTime).Hours() > 24 {
+		handleError(fmt.Errorf("cannot delete game after 24 hours of ending"))
 		return
 	}
 
 	// Delete game
 	if err = db.Where("id = ?", gameID).Delete(Game{}).Error; err != nil {
-		handleError(err)
-	}
-
-	// Delete all scores attached to game
-	if err = db.Where("game_id = ?", gameID).Delete(GameScore{}).Error; err != nil {
-		handleError(err)
-	}
-
-	// Delete all players attached to game
-	if err = db.Where("game_id = ?", gameID).Delete(GamePlayer{}).Error; err != nil {
 		handleError(err)
 	}
 }
