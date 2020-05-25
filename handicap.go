@@ -37,7 +37,7 @@ func calculateHandicaps() ([]HandicapPlayer, error) {
 					break
 				}
 
-				players[i].LatestScores = append(players[i].LatestScores, score.TotalScore)
+				players[i].LatestScores = append(players[i].LatestScores, score)
 				break
 			}
 		}
@@ -46,23 +46,26 @@ func calculateHandicaps() ([]HandicapPlayer, error) {
 	// Calculate differentials
 	for i, player := range players {
 		for _, score := range player.LatestScores {
-			players[i].Differentials = append(players[i].Differentials, (float64(score)-rating)*(113/slope))
+			diff := (float64(score.TotalScore) - rating) * (113 / slope)
+			players[i].Differentials = append(players[i].Differentials, HandicapGame{
+				GameID:       score.GameID,
+				Differential: diff,
+			})
 		}
 
-		// Sort differentials lowest to highest
-		sort.Float64s(players[i].Differentials)
+		// Sort the players' differentials
+		sort.Slice(players[i].Differentials, func(j, k int) bool {
+			return players[i].Differentials[j].Differential < players[i].Differentials[k].Differential
+		})
 
 		// Average the best 5
 		var total float64 = 0
-		for _, diff := range players[i].Differentials[:5] {
-			total += diff
+		for _, h := range players[i].Differentials[:5] {
+			total += h.Differential
 		}
 
 		// Calculate the handicap index
-		players[i].Index = (total / 5) * 0.96
-
-		// Truncate index
-		players[i].Index = float64(int(players[i].Index*10)) / 10
+		players[i].Index = truncateFloat((total / 5) * 0.96)
 	}
 
 	return players, nil
@@ -83,10 +86,15 @@ func getHandicapLeaderboard() ([]LeaderboardEntry, error) {
 
 	// Add handicaps to leaderboard entry
 	for i, player := range players {
+		var games []int
+		for _, h := range player.Differentials[:5] {
+			games = append(games, h.GameID)
+		}
+
 		entries = append(entries, LeaderboardEntry{
 			Name:     player.Name,
 			Value:    fmt.Sprintf("%.1f", players[i].Index),
-			GameList: make([]int, 0),
+			GameList: games,
 		})
 	}
 

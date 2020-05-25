@@ -26,6 +26,10 @@ func (g Game) isLastHole(hole int) bool {
 	return hole == g.HoleCount
 }
 
+func (g Game) isExpired() bool {
+	return time.Now().UTC().Sub(g.EndTime).Hours() > 24
+}
+
 type GameListing struct {
 	ID             int `gorm:"unique;not null;primary_key"`
 	HoleCount      int
@@ -118,13 +122,18 @@ func (Handicap) TableName() string {
 type HandicapPlayer struct {
 	ID            int `gorm:"unique;not null;primary_key"`
 	Name          string
-	LatestScores  []int     `gorm:"-"`
-	Differentials []float64 `gorm:"-"`
-	Index         float64   `gorm:"-"`
+	LatestScores  []Handicap     `gorm:"-"`
+	Differentials []HandicapGame `gorm:"-"`
+	Index         float64        `gorm:"-"`
 }
 
 func (HandicapPlayer) TableName() string {
 	return "players"
+}
+
+type HandicapGame struct {
+	GameID       int
+	Differential float64
 }
 
 type LeaderboardQuery struct {

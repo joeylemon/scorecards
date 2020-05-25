@@ -90,3 +90,8 @@ func getScoreArray(holes int, scores []GameScore) [][]GameScore {
 
 	return scoreMap
 }
+
+// truncateFloat removes digits after the tenth's place (2.5821 => 2.5)
+func truncateFloat(f float64) float64 {
+	return float64(int(f*10)) / 10
+}

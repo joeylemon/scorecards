@@ -260,25 +260,26 @@ func SetScore(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Make sure game isn't over a day old
-	if time.Now().UTC().Sub(game.EndTime).Hours() > 1 {
-		handleError(fmt.Errorf("cannot change game score after 1 hour of ending"))
+	if game.isExpired() {
+		handleError(fmt.Errorf("cannot change game score after 24 hour of ending"))
 		return
 	}
 
 	holes, _ := strconv.Atoi(r.Form.Get("holes"))
 	players := strings.Split(r.Form.Get("players"), ",")
 
-	completedGame := false
+	completedGame := true
 
 	var values []string
 	for hole := 1; hole <= holes; hole++ {
 		for _, player := range players {
 			score := r.Form.Get(fmt.Sprintf("score[%d][%s]", hole, player))
-			log.Printf("score[%d][%s]=%s", hole, player, score)
 			values = append(values, fmt.Sprintf("(%s, %s, %d, %s)", gameID, player, hole, score))
 
-			if game.isLastHole(hole) && score != "0" {
-				completedGame = true
+			log.Printf("score[%d][%s]=%s", hole, player, score)
+
+			if score == "0" {
+				completedGame = false
 			}
 		}
 	}
@@ -293,8 +294,7 @@ func SetScore(w http.ResponseWriter, r *http.Request) {
 		handleError(err)
 	}
 
-	query := "INSERT INTO game_scores(game_id, player_id, hole_num, score) VALUES "
-	query += strings.Join(values, ",")
+	query := "INSERT INTO game_scores(game_id, player_id, hole_num, score) VALUES " + strings.Join(values, ",")
 
 	if err := db.Exec(query).Error; err != nil {
 		handleError(err)
@@ -321,8 +321,7 @@ func DeleteGame(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Make sure game isn't too old
-	log.Printf("Time since ending: %f", time.Now().UTC().Sub(game.EndTime).Hours())
-	if time.Now().UTC().Sub(game.EndTime).Hours() > 24 {
+	if game.isExpired() {
 		handleError(fmt.Errorf("cannot delete game after 24 hours of ending"))
 		return
 	}
