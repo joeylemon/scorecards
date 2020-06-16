@@ -107,6 +107,17 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 					order by value desc`,
 	},
 	{
+		Title: "Easiest Hole",
+		Query: `select gs.hole_num as name, 
+					concat('+', round(avg(gs.score) - cp.par, 2)) as value, 
+					null as games from game_scores gs 
+					left join games g on g.id=gs.game_id
+					left join course_pars cp on cp.hole_num=gs.hole_num and cp.course_id=g.course_id
+					where g.course_id=1 and g.hole_count=9
+					group by gs.hole_num
+					order by value`,
+	},
+	{
 		Title: "Average Game Length",
 		Query: `select c.name, 
 					time_format(sec_to_time(avg(time_to_sec(timediff(g.end_time, g.date)))), '%lh %im') as value,

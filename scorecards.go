@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -94,12 +95,14 @@ func CreateGame(w http.ResponseWriter, r *http.Request) {
 
 	lat, err := strconv.ParseFloat(r.Form.Get("lat"), 64)
 	if err != nil {
-		lat = 0.0
+		handleError(errors.New("could not create game: no latitude was given"))
+		return
 	}
 
 	lon, err := strconv.ParseFloat(r.Form.Get("lon"), 64)
 	if err != nil {
-		lon = 0.0
+		handleError(errors.New("could not create game: no longitude was given"))
+		return
 	}
 
 	players := strings.Split(r.Form.Get("players"), ",") // String-separated list of names
