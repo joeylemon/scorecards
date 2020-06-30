@@ -118,6 +118,18 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 					order by value`,
 	},
 	{
+		Title: "Total Time Played",
+		Query: `select c.name, 
+					CONCAT(
+						FLOOR(TIME_FORMAT(SEC_TO_TIME(sum(UNIX_TIMESTAMP(g.end_time)-UNIX_TIMESTAMP(g.date))), '%H') / 24), 'd ',
+						MOD(TIME_FORMAT(SEC_TO_TIME(sum(UNIX_TIMESTAMP(g.end_time)-UNIX_TIMESTAMP(g.date))), '%H'), 24), 'h ',
+						TIME_FORMAT(SEC_TO_TIME(sum(UNIX_TIMESTAMP(g.end_time)-UNIX_TIMESTAMP(g.date))), '%im')
+					) as value,
+					GROUP_CONCAT(g.id SEPARATOR ', ') as games from games g
+					left join courses c on c.id=g.course_id
+					group by g.course_id`,
+	},
+	{
 		Title: "Average Game Length",
 		Query: `select c.name, 
 					time_format(sec_to_time(avg(time_to_sec(timediff(g.end_time, g.date)))), '%lh %im') as value,
