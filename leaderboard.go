@@ -120,11 +120,7 @@ var queries []LeaderboardQuery = []LeaderboardQuery{
 	{
 		Title: "Total Time Played",
 		Query: `select c.name, 
-					CONCAT(
-						FLOOR(TIME_FORMAT(SEC_TO_TIME(sum(UNIX_TIMESTAMP(g.end_time)-UNIX_TIMESTAMP(g.date))), '%H') / 24), 'd ',
-						MOD(TIME_FORMAT(SEC_TO_TIME(sum(UNIX_TIMESTAMP(g.end_time)-UNIX_TIMESTAMP(g.date))), '%H'), 24), 'h ',
-						TIME_FORMAT(SEC_TO_TIME(sum(UNIX_TIMESTAMP(g.end_time)-UNIX_TIMESTAMP(g.date))), '%im')
-					) as value,
+					concat(round(sum(UNIX_TIMESTAMP(g.end_time)-UNIX_TIMESTAMP(g.date))/3600, 1), ' hours') as value,
 					GROUP_CONCAT(g.id SEPARATOR ', ') as games from games g
 					left join courses c on c.id=g.course_id
 					group by g.course_id`,
