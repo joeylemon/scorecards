@@ -316,6 +316,7 @@ func DeleteGame(w http.ResponseWriter, r *http.Request) {
 	printPostForm(r)
 
 	gameID := r.Form.Get("game")
+	device := r.Form.Get("device")
 
 	// Get game from db
 	var game Game
@@ -324,7 +325,7 @@ func DeleteGame(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Make sure game isn't too old
-	if game.isExpired() {
+	if !strings.Contains(device, "Joey") && game.isExpired() {
 		handleError(fmt.Errorf("cannot delete game after 24 hours of ending"))
 		return
 	}
