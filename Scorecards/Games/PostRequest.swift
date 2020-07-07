@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
     
 func sendGameRequest(url: String, id: Int, completion: @escaping (Data?) -> ()) {
     let url = URL(string: url)!
@@ -14,7 +15,7 @@ func sendGameRequest(url: String, id: Int, completion: @escaping (Data?) -> ()) 
 
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
-    let postString = "id=\(id)"
+    let postString = "id=\(id)&device=\(UIDevice.current.name)"
     request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
     request.httpBody = postString.data(using: String.Encoding.utf8)
 
@@ -53,6 +54,7 @@ func sendSetScoreRequest(id: Int, scores: [[Score]], playerIDs: [String], comple
     postArray.append("gameID=\(id)")
     postArray.append("holes=\(scores.count)")
     postArray.append("players=\(playerIDs.joined(separator: ","))")
+    postArray.append("device=\(UIDevice.current.name)")
     let postString = postArray.joined(separator: "&")
     
     request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -81,7 +83,7 @@ func sendDeleteGameRequest(id: Int) {
 
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
-    let postString = "game=\(id)"
+    let postString = "game=\(id)&device=\(UIDevice.current.name)"
     request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
     request.httpBody = postString.data(using: String.Encoding.utf8)
 
@@ -100,7 +102,7 @@ func sendCreateGameRequest(lat: Double, lon: Double, players: [String], front: B
 
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
-    let postString = "lat=\(lat)&lon=\(lon)&players=\(players.joined(separator: ","))&front=\(front)&holes=\(holes)"
+    let postString = "lat=\(lat)&lon=\(lon)&players=\(players.joined(separator: ","))&front=\(front)&holes=\(holes)&device=\(UIDevice.current.name)"
     request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
     request.httpBody = postString.data(using: String.Encoding.utf8)
 
