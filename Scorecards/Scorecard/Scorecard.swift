@@ -114,6 +114,17 @@ class Scorecard: Codable {
         return names
     }
     
+    func getUnderForPlayer(playerIndex: Int) -> String {
+        var under = 0
+        for hole in 0..<self.Holes {
+            let score = self.Scores[hole][playerIndex].Score
+            if score > 0 {
+                under += score - self.getParForHole(hole: hole+1)
+            }
+        }
+        return under >= 0 ? "+\(under)" : "\(under)"
+    }
+    
     func getSumForPlayer(playerIndex: Int) -> Int {
         var sum = 0
         for hole in 0..<self.Holes {

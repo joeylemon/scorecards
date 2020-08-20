@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pdp-dT-YPE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="pdp-dT-YPE">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -356,8 +356,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDX-G9-vTC">
-                                            <rect key="frame" x="25" y="25" width="0.0" height="0.0"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDX-G9-vTC">
+                                            <rect key="frame" x="20" y="15" width="10.5" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -365,21 +365,30 @@
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DqL-zj-P1l">
                                             <rect key="frame" x="10" y="10" width="30" height="30"/>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0P0-On-oFS" userLabel="Small Label">
+                                            <rect key="frame" x="26.5" y="33.5" width="19.5" height="13.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="DqL-zj-P1l" firstAttribute="leading" secondItem="1yg-7z-tDQ" secondAttribute="leading" constant="10" id="81S-9a-Bhe"/>
                                         <constraint firstItem="DqL-zj-P1l" firstAttribute="centerX" secondItem="1yg-7z-tDQ" secondAttribute="centerX" id="AHQ-7n-bQb"/>
                                         <constraint firstItem="jDX-G9-vTC" firstAttribute="centerX" secondItem="1yg-7z-tDQ" secondAttribute="centerX" id="BVf-ha-vws"/>
+                                        <constraint firstAttribute="trailing" secondItem="0P0-On-oFS" secondAttribute="trailing" constant="4" id="H7U-wZ-Exc"/>
                                         <constraint firstAttribute="bottom" secondItem="DqL-zj-P1l" secondAttribute="bottom" constant="10" id="LWY-4P-Tjm"/>
                                         <constraint firstItem="jDX-G9-vTC" firstAttribute="centerY" secondItem="1yg-7z-tDQ" secondAttribute="centerY" id="LZV-Tp-Edm"/>
                                         <constraint firstItem="DqL-zj-P1l" firstAttribute="centerY" secondItem="1yg-7z-tDQ" secondAttribute="centerY" id="Ogc-VC-8OO"/>
                                         <constraint firstAttribute="trailing" secondItem="DqL-zj-P1l" secondAttribute="trailing" constant="10" id="WzG-tP-rI6"/>
+                                        <constraint firstAttribute="bottom" secondItem="0P0-On-oFS" secondAttribute="bottom" constant="3" id="ehV-8o-ER3"/>
                                         <constraint firstItem="DqL-zj-P1l" firstAttribute="top" secondItem="1yg-7z-tDQ" secondAttribute="top" constant="10" id="rVT-jz-b1M"/>
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <connections>
                                     <outlet property="bigImage" destination="DqL-zj-P1l" id="NY3-PR-Gfz"/>
                                     <outlet property="label" destination="jDX-G9-vTC" id="GFQ-n2-1St"/>
+                                    <outlet property="smallLabel" destination="0P0-On-oFS" id="GTK-wo-GeI"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -392,7 +401,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LfR-5b-T9V" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1819" y="-239"/>
+            <point key="canvasLocation" x="1818.840579710145" y="-239.0625"/>
         </scene>
         <!--Scorecards-->
         <scene sceneID="hre-VF-laC">
@@ -510,26 +519,26 @@
             <point key="canvasLocation" x="1682.608695652174" y="699.77678571428567"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="18.square.fill" catalog="system" width="64" height="56"/>
-        <image name="9.square.fill" catalog="system" width="64" height="56"/>
-        <image name="b.square.fill" catalog="system" width="64" height="56"/>
-        <image name="c.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="chart.bar.fill" catalog="system" width="64" height="44"/>
-        <image name="d.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="f.square.fill" catalog="system" width="64" height="56"/>
-        <image name="j.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="list.number" catalog="system" width="64" height="48"/>
-        <image name="location.fill" catalog="system" width="64" height="56"/>
-        <image name="m.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="number.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="person.fill" catalog="system" width="64" height="60"/>
-        <image name="r.circle.fill" catalog="system" width="64" height="60"/>
-        <image name="timer" catalog="system" width="64" height="60"/>
-        <image name="w.circle.fill" catalog="system" width="64" height="60"/>
-    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="BRt-oA-pdd"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+    <resources>
+        <image name="18.square.fill" catalog="system" width="128" height="114"/>
+        <image name="9.square.fill" catalog="system" width="128" height="114"/>
+        <image name="b.square.fill" catalog="system" width="128" height="114"/>
+        <image name="c.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="chart.bar.fill" catalog="system" width="128" height="89"/>
+        <image name="d.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="f.square.fill" catalog="system" width="128" height="114"/>
+        <image name="j.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="list.number" catalog="system" width="128" height="97"/>
+        <image name="location.fill" catalog="system" width="128" height="115"/>
+        <image name="m.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="number.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="r.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="timer" catalog="system" width="128" height="121"/>
+        <image name="w.circle.fill" catalog="system" width="128" height="121"/>
+    </resources>
 </document>

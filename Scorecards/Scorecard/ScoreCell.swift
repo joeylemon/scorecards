@@ -11,6 +11,7 @@ import UIKit
 class ScoreCell: UICollectionViewCell {
     
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var smallLabel: UILabel!
     @IBOutlet weak var bigImage: UIImageView!
     
 }

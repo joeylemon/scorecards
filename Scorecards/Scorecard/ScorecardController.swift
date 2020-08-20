@@ -68,6 +68,7 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
         
         // Reset all cell elements
         cell.label.text = ""
+        cell.smallLabel.text = ""
         cell.bigImage.image = nil
         cell.bigImage.setNeedsDisplay()
         cell.layer.borderWidth = 0
@@ -142,9 +143,11 @@ class ScorecardController: UICollectionViewController, UICollectionViewDelegateF
                 cell.layer.backgroundColor = UIColor.tertiaryLabel.cgColor
                 
                 let score = scorecard!.getSumForPlayer(playerIndex: playerIndex)
+                let under = scorecard!.getUnderForPlayer(playerIndex: playerIndex)
                 cell.label.font = cell.label.font.withSize(25)
                 cell.label.textColor = UIColor.label
-                cell.label.text = String(score)
+                cell.label.text = "\(score)"
+                cell.smallLabel.text = under
             } else if column == getTotalColumns() - 1 {
                 // Par total row
                 cell.layer.backgroundColor = UIColor.quaternaryLabel.cgColor
